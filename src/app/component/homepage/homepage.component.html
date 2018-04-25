@@ -1,0 +1,46 @@
+<header>
+  <p-menubar [model]="items">
+    <!-- <input type="text" pInputText placeholder="Search"> -->
+    <button pButton label="Tìm kiếm" icon="fa-search" (click)="searchSidebarDisplay = true"></button>
+  </p-menubar>
+</header>
+<div id="search-sidebar">
+  <p-sidebar [(visible)]="searchSidebarDisplay" styleClass="ui-sidebar-sm" position="right" [baseZIndex]="10000">
+      <div>
+          <h3 class="first">Tên di sản</h3>
+          <input id="input" type="text" size="30" pInputText> 
+          <h3 class="first">Tên huyện</h3>
+          <input id="input" type="text" size="30" pInputText> 
+          <h3 class="first">Tên xã</h3>
+          <input id="input" type="text" size="30" pInputText> 
+          <button style="margin-top: 1em" pButton label="Tìm kiếm" icon="fa-search" (click)="searchSidebarDisplay = false; resultSidebarDisplay = true"></button>
+      </div>
+      
+  </p-sidebar>
+</div>
+<div id="result-sidebar">
+  <p-sidebar [(visible)]="resultSidebarDisplay" styleClass="ui-sidebar-sm" position="bottom" [baseZIndex]="10000">
+      <p-dataTable [value]="results" selectionMode="single" [(selection)]="selectedResult">
+          <p-column field="name" header="name"></p-column>
+          <p-column field="localName" header="localName"></p-column>
+          <p-column field="district" header="district"></p-column>
+          <p-column field="commune" header="commune"></p-column>
+          <p-column field="village" header="village"></p-column>
+          <p-column field="scale" header="scale"></p-column>
+      </p-dataTable>
+  </p-sidebar>
+</div>
+<section id="map">
+  <p-card>
+    <div style="height: 300px;" leaflet [leafletOptions]="options">
+    </div>
+  </p-card>
+</section>
+<section id="content">
+  <p-panel header="Chi tiết điểm di sản" [style]="{'margin-bottom':'20px'}">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur commodi dignissimos blanditiis tenetur quidem, voluptate eius voluptas laborum ratione omnis cupiditate illum, repudiandae nisi. Asperiores provident debitis earum quae?
+  </p-panel>
+</section>
+<footer>
+
+</footer>
