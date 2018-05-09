@@ -14,6 +14,8 @@ export class HomepageComponent implements OnInit {
   options: any;
   results: any[];
   selectedResult: any;
+  searchSidebarDisplay: any;
+  resultSidebarDisplay: any;
 
 
   constructor() { }
