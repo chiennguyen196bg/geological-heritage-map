@@ -6,28 +6,21 @@
 </header>
 <div id="search-sidebar">
   <p-sidebar [(visible)]="searchSidebarDisplay" styleClass="ui-sidebar-sm" position="right" [baseZIndex]="10000">
-      <div>
-          <h3 class="first">Tên di sản</h3>
-          <input id="input" type="text" size="30" pInputText> 
-          <h3 class="first">Tên huyện</h3>
-          <input id="input" type="text" size="30" pInputText> 
-          <h3 class="first">Tên xã</h3>
-          <input id="input" type="text" size="30" pInputText> 
-          <button style="margin-top: 1em" pButton label="Tìm kiếm" icon="fa-search" (click)="searchSidebarDisplay = false; resultSidebarDisplay = true"></button>
-      </div>
-      
+    <app-search-sidebar (searched)="onSearched($event); searchSidebarDisplay = false; resultSidebarDisplay = true"></app-search-sidebar>
   </p-sidebar>
 </div>
 <div id="result-sidebar">
-  <p-sidebar [(visible)]="resultSidebarDisplay" styleClass="ui-sidebar-sm" position="bottom" [baseZIndex]="10000">
-      <p-dataTable [value]="results" selectionMode="single" [(selection)]="selectedResult">
-          <p-column field="name" header="name"></p-column>
-          <p-column field="localName" header="localName"></p-column>
-          <p-column field="district" header="district"></p-column>
-          <p-column field="commune" header="commune"></p-column>
-          <p-column field="village" header="village"></p-column>
-          <p-column field="scale" header="scale"></p-column>
+  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000">
+    <div style="overflow: auto; height: 100%;">
+      <p-dataTable [value]="searchResult" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="5" [paginator]="true">
+        <p-column field="sign" header="Kí hiệu"></p-column>
+        <p-column field="featured" header="Đặc điểm"></p-column>
+        <p-column field="location" header="Vị trí"></p-column>
+        <p-column field="type" header="Loại"></p-column>
+        <p-column field="x" header="X"></p-column>
+        <p-column field="y" header="Y"></p-column>
       </p-dataTable>
+    </div>
   </p-sidebar>
 </div>
 <section id="map">
@@ -39,5 +32,5 @@
   </p-panel>
 </section>
 <footer>
-  {{nClicked}}
+  {{selectedResult?.sign}}
 </footer>

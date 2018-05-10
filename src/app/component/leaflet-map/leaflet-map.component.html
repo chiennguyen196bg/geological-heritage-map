@@ -1,4 +1,4 @@
 <p-card>
-  <div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="layers">
+  <div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletMapReady)="onMapReady($event)">
   </div>
 </p-card>

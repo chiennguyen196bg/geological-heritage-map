@@ -8,8 +8,8 @@ import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { SidebarModule } from 'primeng/sidebar';
 import { InputTextModule } from 'primeng/inputtext';
-import {AccordionModule} from 'primeng/accordion';
-import {DataTableModule} from 'primeng/datatable';
+import { AccordionModule } from 'primeng/accordion';
+import { DataTableModule } from 'primeng/datatable';
 
 
 @NgModule({

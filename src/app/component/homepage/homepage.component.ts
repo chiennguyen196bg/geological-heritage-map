@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { HeritageService } from '../../service/heritage.service';
 import { Heritage } from '../../class/heritage';
+import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
 
 
 @Component({
@@ -10,16 +11,17 @@ import { Heritage } from '../../class/heritage';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+  @ViewChild(LeafletMapComponent)
+  private leafletMapComponent: LeafletMapComponent;
 
   items: MenuItem[];
-  results: any[];
   selectedResult: any;
   searchSidebarDisplay: any;
   resultSidebarDisplay: any;
   data: Heritage[] = [];
   title = 'hello world';
   selectedHeritage: Heritage;
-  nClicked = 0;
+  searchResult: Heritage[];
 
   constructor(
     private heritageService: HeritageService
@@ -29,32 +31,6 @@ export class HomepageComponent implements OnInit {
     this.title = 'Hkjhdjh';
     this.items = [
       { label: 'Di sản địa chất' },
-    ];
-    this.results = [
-      {
-        name: 'Test1',
-        localName: 'Local name',
-        district: 'string',
-        commune: 'string',
-        village: 'string',
-        scale: 'string',
-      },
-      {
-        name: 'Test2',
-        localName: 'Local name',
-        district: 'string',
-        commune: 'string',
-        village: 'string',
-        scale: 'string',
-      },
-      {
-        name: 'Test3',
-        localName: 'Local name',
-        district: 'string',
-        commune: 'string',
-        village: 'string',
-        scale: 'string',
-      }
     ];
 
     this.heritageService.getHeritages().subscribe(data => {
@@ -67,7 +43,16 @@ export class HomepageComponent implements OnInit {
     this.selectedHeritage = item;
     console.log('Catch event ' + item.sign);
     console.log(this.selectedHeritage);
-    this.nClicked++;
+  }
+
+  public onSearched(data: Heritage[]) {
+    console.log(data);
+    this.searchResult = data;
+  }
+
+  public onResultSelected(e) {
+    console.log(e.data);
+    this.leafletMapComponent.flyToHeritage(e.data);
   }
 
 }

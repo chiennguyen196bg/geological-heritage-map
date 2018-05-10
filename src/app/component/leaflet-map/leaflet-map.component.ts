@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
 import { Heritage } from '../../class/heritage';
-import { marker, tileLayer, latLng, icon } from 'leaflet';
+import { marker, tileLayer, latLng, icon, Map } from 'leaflet';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -15,6 +15,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
   options: any;
   layers: any[];
+  map: Map;
   constructor(
     private _ngZone: NgZone
   ) { }
@@ -57,6 +58,18 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         });
       });
     }
+  }
+  public flyToHeritage(item: Heritage): void {
+    if (!this.map) {
+      return;
+    }
+    const coordinates = item.geometry.coordinates;
+    this.map.flyTo(latLng(coordinates[1], coordinates[0]));
+  }
+
+  onMapReady(map: Map) {
+    console.log('map ready');
+    this.map = map;
   }
 
 }

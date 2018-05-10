@@ -16,7 +16,7 @@ export class HeritageService {
   ) { }
 
   public getHeritages(): Observable<Heritage[]> {
-    if (this._cache ) {
+    if (this._cache) {
       return of(this._cache);
     } else {
       return this.http.get(this._url).pipe(
@@ -43,6 +43,23 @@ export class HeritageService {
       _.geometry = item['geometry'];
       return _;
     });
+  }
+
+  public searchHeritages(name = '', districtName = '', communeName = ''): Observable<Heritage[]> {
+    name = name.trim().toLocaleLowerCase();
+    districtName = districtName.trim().toLocaleLowerCase();
+    communeName = communeName.trim().toLocaleLowerCase();
+    return this.getHeritages().pipe(
+      map(data => {
+        return data.filter((item: Heritage) => (item.sign.toLocaleLowerCase().indexOf(name) > -1 || name === ''));
+      }),
+      map(data => {
+        return data.filter((item: Heritage) => (item.district.toLocaleLowerCase().indexOf(districtName) > -1 || districtName === ''));
+      }),
+      map(data => {
+        return data.filter((item: Heritage) => (item.location.toLocaleLowerCase().indexOf(communeName) > -1 || communeName === ''));
+      }),
+    );
   }
 
 }
