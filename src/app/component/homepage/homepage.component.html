@@ -23,14 +23,34 @@
     </div>
   </p-sidebar>
 </div>
-<section id="map">
-  <app-leaflet-map [data]="data" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
-</section>
+
 <section id="content">
-  <p-panel header="Chi tiết điểm di sản" [style]="{'margin-bottom':'20px'}">
-    {{selectedHeritage?.sign}}
-  </p-panel>
+  <div class="ui-g ui-md">
+    <div class="ui-g-12 ui-md-9">
+      <app-leaflet-map [data]="data" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
+    </div>
+    <div class="ui-g-12 ui-md-3">
+      <p-panel header="Chi tiết điểm di sản" [style]="{'margin-bottom':'20px'}">
+        <div *ngIf="selectedHeritage">
+          <b>Kí hiệu: </b>{{selectedHeritage?.sign}}
+          <br>
+          <b>Đặc điểm: </b>{{selectedHeritage?.featured}}
+          <br>
+          <b>Loại: </b>{{selectedHeritage?.type}}
+          <br>
+          <b>Vị trí: </b>{{selectedHeritage?.location}}
+          <br>
+          <b>X: </b>{{selectedHeritage?.x}}
+          <br>
+          <b>Y: </b>{{selectedHeritage?.y}}
+          <br>
+          <b>File đính kèm: </b>
+          <a href="{{selectedHeritage?.attachedFile}}">Link</a>
+          <br>
+        </div>
+      </p-panel>
+    </div>
+  </div>
 </section>
 <footer>
-  {{selectedResult?.sign}}
 </footer>
