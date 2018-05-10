@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
 import { Heritage } from '../../class/heritage';
 import { marker, tileLayer, latLng, icon } from 'leaflet';
@@ -15,7 +15,9 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
   options: any;
   layers: any[];
-  constructor() { }
+  constructor(
+    private _ngZone: NgZone
+  ) { }
 
   ngOnInit() {
     console.log('On init');
@@ -49,7 +51,9 @@ export class LeafletMapComponent implements OnInit, OnChanges {
           })
         }).on('click', () => {
           console.log('click on marker: ' + item.sign);
-          this.markerClicked.emit(item);
+          this._ngZone.run(() => {
+            this.markerClicked.emit(item);
+          });
         });
       });
     }
