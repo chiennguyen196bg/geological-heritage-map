@@ -31,16 +31,13 @@
   </p-sidebar>
 </div>
 <section id="map">
-  <p-card>
-    <div style="height: 500px;" leaflet [leafletOptions]="options">
-    </div>
-  </p-card>
+  <app-leaflet-map [data]="data" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
 </section>
 <section id="content">
   <p-panel header="Chi tiết điểm di sản" [style]="{'margin-bottom':'20px'}">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur commodi dignissimos blanditiis tenetur quidem, voluptate eius voluptas laborum ratione omnis cupiditate illum, repudiandae nisi. Asperiores provident debitis earum quae?
+    {{selectedHeritage?.sign}}
   </p-panel>
 </section>
 <footer>
-
+  {{nClicked}}
 </footer>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import * as L from 'leaflet';
+import { HeritageService } from '../../service/heritage.service';
+import { Heritage } from '../../class/heritage';
 
 
 @Component({
@@ -11,26 +12,24 @@ import * as L from 'leaflet';
 export class HomepageComponent implements OnInit {
 
   items: MenuItem[];
-  options: any;
   results: any[];
   selectedResult: any;
   searchSidebarDisplay: any;
   resultSidebarDisplay: any;
+  data: Heritage[] = [];
+  title = 'hello world';
+  selectedHeritage: Heritage;
+  nClicked = 0;
 
-
-  constructor() { }
+  constructor(
+    private heritageService: HeritageService
+  ) { }
 
   ngOnInit() {
+    this.title = 'Hkjhdjh';
     this.items = [
-      { label: 'Di sản địa chất'},
+      { label: 'Di sản địa chất' },
     ];
-    this.options = {
-      layers: [
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
-      ],
-      zoom: 5,
-      center: L.latLng(46.879966, -121.726909)
-    };
     this.results = [
       {
         name: 'Test1',
@@ -57,6 +56,18 @@ export class HomepageComponent implements OnInit {
         scale: 'string',
       }
     ];
+
+    this.heritageService.getHeritages().subscribe(data => {
+      this.data = data;
+      // console.log(this.data);
+    });
+  }
+
+  public onMarkerClicked(item: Heritage) {
+    this.selectedHeritage = item;
+    console.log('Catch event ' + item.sign);
+    console.log(this.selectedHeritage);
+    this.nClicked++;
   }
 
 }
