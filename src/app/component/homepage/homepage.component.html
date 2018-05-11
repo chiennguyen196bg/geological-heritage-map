@@ -12,7 +12,7 @@
 <div id="result-sidebar">
   <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000">
     <div style="overflow: auto; height: 100%;">
-      <p-dataTable [value]="searchResult" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="5" [paginator]="true">
+      <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="5" [paginator]="true">
         <p-column field="sign" header="Kí hiệu"></p-column>
         <p-column field="featured" header="Đặc điểm"></p-column>
         <p-column field="location" header="Vị trí"></p-column>

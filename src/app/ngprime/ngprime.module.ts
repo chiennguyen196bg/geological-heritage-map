@@ -10,6 +10,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { InputTextModule } from 'primeng/inputtext';
 import { AccordionModule } from 'primeng/accordion';
 import { DataTableModule } from 'primeng/datatable';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { DataTableModule } from 'primeng/datatable';
     SidebarModule,
     InputTextModule,
     AccordionModule,
-    DataTableModule
+    DataTableModule,
+    AutoCompleteModule
   ],
   exports: [
     MenubarModule,
@@ -33,7 +35,8 @@ import { DataTableModule } from 'primeng/datatable';
     SidebarModule,
     InputTextModule,
     AccordionModule,
-    DataTableModule
+    DataTableModule,
+    AutoCompleteModule
   ],
   declarations: []
 })

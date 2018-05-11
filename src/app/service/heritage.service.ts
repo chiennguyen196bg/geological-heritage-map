@@ -62,4 +62,15 @@ export class HeritageService {
     );
   }
 
+  public suggest(query: string, feild: string): Observable<string[]> {
+    query = query.trim().toLocaleLowerCase();
+    return this.getHeritages().pipe(
+      map(data => {
+        const set = new Set(data.map(item => item[feild]));
+        return Array.from(set);
+      }),
+      map(data => data.filter((item) => query !== '' && item.toLocaleLowerCase().indexOf(query) > -1)),
+    );
+  }
+
 }
