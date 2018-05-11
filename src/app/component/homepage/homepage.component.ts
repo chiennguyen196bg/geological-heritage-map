@@ -15,13 +15,12 @@ export class HomepageComponent implements OnInit {
   private leafletMapComponent: LeafletMapComponent;
 
   items: MenuItem[];
-  selectedResult: any;
   searchSidebarDisplay: any;
   resultSidebarDisplay: any;
   data: Heritage[] = [];
   title = 'hello world';
   selectedHeritage: Heritage;
-  searchResult: Heritage[];
+  searchResults: Heritage[];
 
   constructor(
     private heritageService: HeritageService
@@ -47,12 +46,13 @@ export class HomepageComponent implements OnInit {
 
   public onSearched(data: Heritage[]) {
     console.log(data);
-    this.searchResult = data;
+    this.searchResults = data;
   }
 
   public onResultSelected(e) {
     console.log(e.data);
     this.leafletMapComponent.flyToHeritage(e.data);
+    this.selectedHeritage = e.data;
   }
 
 }

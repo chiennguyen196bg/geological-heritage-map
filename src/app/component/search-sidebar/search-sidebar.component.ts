@@ -11,6 +11,9 @@ export class SearchSidebarComponent implements OnInit {
   name = '';
   districtName = '';
   communeName = '';
+  nameResults: string[];
+  districtNameResults: string[];
+  communeNameResults: string[];
   @Output() searched = new EventEmitter<Heritage[]>();
 
   constructor(
@@ -26,6 +29,16 @@ export class SearchSidebarComponent implements OnInit {
       .subscribe(data => {
         this.searched.emit(data);
       });
+  }
+
+  suggestName(event) {
+    this.heritageService.suggest(event.query, 'sign').subscribe(data => this.nameResults = data);
+  }
+  suggestDistrictName(event) {
+    this.heritageService.suggest(event.query, 'district').subscribe(data => this.districtNameResults = data);
+  }
+  suggestCommuneName(event) {
+    this.heritageService.suggest(event.query, 'location').subscribe(data => this.communeNameResults = data);
   }
 
 }
