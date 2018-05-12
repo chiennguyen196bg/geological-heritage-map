@@ -19,7 +19,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   constructor(
     private _ngZone: NgZone
   ) { }
-
+  // var Esri_WorldImagery = L.;
   ngOnInit() {
     console.log('On init');
     this.options = {
@@ -40,8 +40,8 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         const coordinates = item.geometry.coordinates;
         return marker(latLng(coordinates[1], coordinates[0]), {
           icon: icon({
-            // iconSize: [25, 41],
-            // iconAnchor: [13, 41],
+            iconSize: [25, 25],
+            iconAnchor: [13, 25],
             // iconUrl: 'assets/marker-icon.png',
             // shadowUrl: 'assets/marker-shadow.png',
             iconUrl: 'assets/images/DiemDiSan_0_8.png'
@@ -50,6 +50,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
           console.log('click on marker: ' + item.sign);
           this._ngZone.run(() => {
             this.markerClicked.emit(item);
+            this.flyToHeritage(item);
           });
         });
       });
@@ -60,7 +61,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       return;
     }
     const coordinates = item.geometry.coordinates;
-    this.map.flyTo(latLng(coordinates[1], coordinates[0]));
+    this.map.flyTo(latLng(coordinates[1], coordinates[0]), 15);
   }
 
   onMapReady(map: Map) {
