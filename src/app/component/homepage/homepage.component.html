@@ -10,7 +10,7 @@
   </p-sidebar>
 </div>
 <div id="result-sidebar">
-  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000">
+  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)">
     <div style="overflow: auto; height: 100%;">
       <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="5" [paginator]="true">
         <p-column field="sign" header="Kí hiệu"></p-column>
@@ -27,7 +27,7 @@
 <section id="content">
   <div class="ui-g ui-md">
     <div class="ui-g-12 ui-md-9">
-      <app-leaflet-map [data]="data" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
+      <app-leaflet-map [data]="data" [markedPoints]='searchResults' [bindingPoints]="[selectedHeritage]" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
     </div>
     <div class="ui-g-12 ui-md-3">
       <p-panel header="Chi tiết điểm di sản" [style]="{'margin-bottom':'20px'}">
@@ -48,6 +48,7 @@
           <a href="{{selectedHeritage?.attachedFile}}">Link</a>
           <br>
         </div>
+        <button *ngIf="selectedHeritage" style="margin-top: 1em" pButton label="Reset" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
       </p-panel>
     </div>
   </div>

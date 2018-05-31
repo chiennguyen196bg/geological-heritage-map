@@ -45,14 +45,19 @@ export class HomepageComponent implements OnInit {
   }
 
   public onSearched(data: Heritage[]) {
-    console.log(data);
+    // console.log(data);
     this.searchResults = data;
   }
 
   public onResultSelected(e) {
-    console.log(e.data);
+    // console.log(e.data);
     this.leafletMapComponent.flyToHeritage(e.data);
     this.selectedHeritage = e.data;
+  }
+
+  public onSearchResultSidebarHide(e) {
+    console.log('On hide search results sidebar hide');
+    this.searchResults = [];
   }
 
 }

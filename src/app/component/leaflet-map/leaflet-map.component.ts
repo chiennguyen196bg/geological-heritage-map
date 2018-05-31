@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
 import { Heritage } from '../../class/heritage';
-import { marker, tileLayer, latLng, icon, Map } from 'leaflet';
+import { marker, tileLayer, latLng, icon, Map, IconOptions, Icon } from 'leaflet';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -11,6 +11,8 @@ import { marker, tileLayer, latLng, icon, Map } from 'leaflet';
 export class LeafletMapComponent implements OnInit, OnChanges {
 
   @Input() data: Heritage[];
+  @Input() markedPoints: Heritage[] = [];
+  @Input() bindingPoints: Heritage[] = [];
   @Output() markerClicked = new EventEmitter<Heritage>();
 
   options: any;
@@ -32,25 +34,41 @@ export class LeafletMapComponent implements OnInit, OnChanges {
     // console.log(this.data);
   }
 
+  private createIcon(item: Heritage, type = 'default'): Icon {
+    let iconOptions: IconOptions;
+    iconOptions = {
+      iconUrl: 'assets/images/DiemDiSan_0_8.png',
+      iconSize: [25, 25],
+      iconAnchor: [13, 25],
+    };
+    switch (type) {
+      case 'marked': iconOptions.iconUrl = 'assets/images/icons8-ghost-48.png'; break;
+      case 'binding': iconOptions.iconUrl = 'assets/images/pineapple.png'; break;
+      // default: iconOptions.iconUrl = 'assets/marker-icon.png'; break;
+    }
+    return icon(iconOptions);
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     console.log('Onchanges');
     console.log(this.data);
     if (this.data) {
       this.layers = this.data.map(item => {
         const coordinates = item.geometry.coordinates;
+        let type = null;
+        if (this.bindingPoints && this.bindingPoints.indexOf(item) > -1) {
+          type = 'binding';
+        } else if (this.markedPoints && this.markedPoints.indexOf(item) > -1) {
+          type = 'marked';
+        }
+        // console.log('type: ' + type);
         return marker(latLng(coordinates[1], coordinates[0]), {
-          icon: icon({
-            iconSize: [25, 25],
-            iconAnchor: [13, 25],
-            // iconUrl: 'assets/marker-icon.png',
-            // shadowUrl: 'assets/marker-shadow.png',
-            iconUrl: 'assets/images/DiemDiSan_0_8.png'
-          })
+          icon: this.createIcon(item, type)
         }).on('click', () => {
           console.log('click on marker: ' + item.sign);
           this._ngZone.run(() => {
             this.markerClicked.emit(item);
-            this.flyToHeritage(item);
+            // this.flyToHeritage(item);
           });
         });
       });
