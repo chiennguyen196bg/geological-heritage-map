@@ -37,7 +37,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   private createIcon(item: Heritage, type = 'default'): Icon {
     let iconOptions: IconOptions;
     iconOptions = {
-      iconUrl: 'assets/images/DiemDiSan_0_8.png',
+      iconUrl: 'assets/images/' + item.type + '.png',
       iconSize: [25, 25],
       iconAnchor: [13, 25],
     };

@@ -35,7 +35,7 @@ export class HeritageService {
       _.id = item.properties['ID'];
       _.name = item.properties['Ten'];
       _.type = item.properties['Kieu'];
-      _.lable = item.properties['KyHieu'];
+      _.label = item.properties['KyHieu'];
       // _.attachedFile = item.properties['Link'];
       _.commune = item.properties['Xa'];
       _.district = item.properties['Huyen'];
