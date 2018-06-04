@@ -30,19 +30,17 @@
       <app-leaflet-map [data]="data" [markedPoints]='searchResults' [bindingPoints]="[selectedHeritage]" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
     </div>
     <div class="ui-g-12 ui-md-3">
-      <p-panel header="Chi tiết điểm di sản" [style]="{'margin-bottom':'20px'}">
+      <p-panel header="Đặc điểm di sản" [style]="{'margin-bottom':'20px'}">
         <div *ngIf="selectedHeritage">
-          <b>Kí hiệu: </b>{{selectedHeritage?.sign}}
+          <b>Tên: </b>{{selectedHeritage?.name}}
           <br>
-          <b>Đặc điểm: </b>{{selectedHeritage?.featured}}
+          <b>Kiểu: </b>{{selectedHeritage?.type}}
           <br>
-          <b>Loại: </b>{{selectedHeritage?.type}}
+          <b>Ký hiệu: </b>{{selectedHeritage?.label}}
           <br>
-          <b>Vị trí: </b>{{selectedHeritage?.location}}
+          <b>Huyện: </b>{{selectedHeritage?.district}}
           <br>
-          <b>X: </b>{{selectedHeritage?.x}}
-          <br>
-          <b>Y: </b>{{selectedHeritage?.y}}
+          <b>Xã: </b>{{selectedHeritage?.commune}}
           <br>
           <b>File đính kèm: </b>
           <a href="{{selectedHeritage?.attachedFile}}">Link</a>

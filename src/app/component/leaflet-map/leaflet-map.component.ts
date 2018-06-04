@@ -65,7 +65,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         return marker(latLng(coordinates[1], coordinates[0]), {
           icon: this.createIcon(item, type)
         }).on('click', () => {
-          console.log('click on marker: ' + item.sign);
+          console.log('click on marker: ' + item.id);
           this._ngZone.run(() => {
             this.markerClicked.emit(item);
             // this.flyToHeritage(item);

@@ -40,7 +40,7 @@ export class HomepageComponent implements OnInit {
 
   public onMarkerClicked(item: Heritage) {
     this.selectedHeritage = item;
-    console.log('Catch event ' + item.sign);
+    console.log('Catch event ' + item.id);
     console.log(this.selectedHeritage);
   }
 

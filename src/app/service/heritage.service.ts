@@ -32,13 +32,12 @@ export class HeritageService {
     return data.map(item => {
       // console.log(item);
       const _ = new Heritage();
-      _.sign = item.properties['KyHieu'];
-      _.featured = item.properties['Dac_Diem'];
-      _.location = item.properties['ViTri'];
-      _.x = item.properties['X'];
-      _.y = item.properties['Y'];
-      _.type = item.properties['KieuDiSan'].replace(/\s/g, '').split(',');
-      _.attachedFile = item.properties['Link'];
+      _.id = item.properties['ID'];
+      _.name = item.properties['Ten'];
+      _.type = item.properties['Kieu'];
+      _.lable = item.properties['KyHieu'];
+      // _.attachedFile = item.properties['Link'];
+      _.commune = item.properties['Xa'];
       _.district = item.properties['Huyen'];
       _.geometry = item['geometry'];
       return _;
@@ -51,13 +50,13 @@ export class HeritageService {
     communeName = communeName.trim().toLocaleLowerCase();
     return this.getHeritages().pipe(
       map(data => {
-        return data.filter((item: Heritage) => (item.sign.toLocaleLowerCase().indexOf(name) > -1 || name === ''));
+        return data.filter((item: Heritage) => (item.name.toLocaleLowerCase().indexOf(name) > -1 || name === ''));
       }),
       map(data => {
         return data.filter((item: Heritage) => (item.district.toLocaleLowerCase().indexOf(districtName) > -1 || districtName === ''));
       }),
       map(data => {
-        return data.filter((item: Heritage) => (item.location.toLocaleLowerCase().indexOf(communeName) > -1 || communeName === ''));
+        return data.filter((item: Heritage) => (item.commune.toLocaleLowerCase().indexOf(communeName) > -1 || communeName === ''));
       }),
     );
   }
