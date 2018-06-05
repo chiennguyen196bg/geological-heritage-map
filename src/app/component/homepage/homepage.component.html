@@ -42,11 +42,14 @@
           <br>
           <b>Xã: </b>{{selectedHeritage?.commune}}
           <br>
-          <b>File đính kèm: </b>
+          <!-- <b>File đính kèm: </b>
           <a href="{{selectedHeritage?.attachedFile}}">Link</a>
-          <br>
+          <br> -->
         </div>
-        <button *ngIf="selectedHeritage" style="margin-top: 1em" pButton label="Reset" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
+        <div *ngIf="selectedHeritage" style="margin-top: 1em" >
+          <button pButton label="Reset" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
+          <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()"></button>
+        </div>
       </p-panel>
     </div>
   </div>

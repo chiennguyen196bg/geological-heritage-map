@@ -60,4 +60,9 @@ export class HomepageComponent implements OnInit {
     this.searchResults = [];
   }
 
+  public onSeeMore() {
+    console.log(this.selectedHeritage.attachedFile);
+    window.open(this.selectedHeritage.attachedFile, '_blank');
+  }
+
 }
