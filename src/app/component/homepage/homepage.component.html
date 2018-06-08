@@ -27,7 +27,12 @@
 <section id="content">
   <div class="ui-g ui-md">
     <div class="ui-g-12 ui-md-9">
-      <app-leaflet-map [data]="data" [markedPoints]='searchResults' [bindingPoints]="[selectedHeritage]" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
+      <app-leaflet-map 
+        [data]="data" 
+        [markedPoints]='searchResults' 
+        [bindingPoints]="[selectedHeritage]" 
+        (markerClicked)="onMarkerClicked($event)">
+      </app-leaflet-map>
     </div>
     <div class="ui-g-12 ui-md-3">
       <p-panel header="Đặc điểm di sản" [style]="{'margin-bottom':'20px'}">
@@ -42,11 +47,8 @@
           <br>
           <b>Xã: </b>{{selectedHeritage?.commune}}
           <br>
-          <!-- <b>File đính kèm: </b>
-          <a href="{{selectedHeritage?.attachedFile}}">Link</a>
-          <br> -->
         </div>
-        <div *ngIf="selectedHeritage" style="margin-top: 1em" >
+        <div *ngIf="selectedHeritage" style="margin-top: 1em">
           <button pButton label="Reset" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
           <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()"></button>
         </div>

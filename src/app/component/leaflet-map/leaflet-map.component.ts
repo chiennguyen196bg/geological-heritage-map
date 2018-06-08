@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
 import { Heritage } from '../../class/heritage';
-import { marker, tileLayer, latLng, icon, Map, IconOptions, Icon } from 'leaflet';
+import { marker, tileLayer, latLng, icon, Map, IconOptions, Icon, Control, DomUtil } from 'leaflet';
+import { heritageTypeConfig } from '../../config/heritage-type';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -15,9 +16,46 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   @Input() bindingPoints: Heritage[] = [];
   @Output() markerClicked = new EventEmitter<Heritage>();
 
+
   options: any;
   layers: any[];
   map: Map;
+
+  private static createIcon(item: Heritage, type = 'default'): Icon {
+    let iconOptions: IconOptions;
+    let iconUrl = 'assets/marker-icon.png';
+    for (const config of heritageTypeConfig) {
+      if (item.type === config.name) {
+        iconUrl = config.image_url;
+        break;
+      }
+    }
+    iconOptions = {
+      iconUrl: iconUrl,
+      iconSize: [25, 25],
+      iconAnchor: [13, 25],
+    };
+    switch (type) {
+      case 'marked': iconOptions.iconUrl = 'assets/images/icons8-ghost-48.png'; break;
+      case 'binding': iconOptions.iconUrl = 'assets/images/pineapple.png'; break;
+      // default: iconOptions.iconUrl = 'assets/marker-icon.png'; break;
+    }
+    return icon(iconOptions);
+  }
+
+  private static createLegend(map: Map) {
+    const legend = new Control({ position: 'bottomleft' });
+    legend.onAdd = function (_map: Map) {
+      const div = DomUtil.create('div', 'info legend');
+      for (const config of heritageTypeConfig) {
+        div.innerHTML += '<img src="' + config.image_url + '"/> ' + config.name + '<br>';
+      }
+      return div;
+    };
+    legend.addTo(map);
+  }
+
+
   constructor(
     private _ngZone: NgZone
   ) { }
@@ -34,20 +72,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
     // console.log(this.data);
   }
 
-  private createIcon(item: Heritage, type = 'default'): Icon {
-    let iconOptions: IconOptions;
-    iconOptions = {
-      iconUrl: 'assets/images/' + item.type + '.png',
-      iconSize: [25, 25],
-      iconAnchor: [13, 25],
-    };
-    switch (type) {
-      case 'marked': iconOptions.iconUrl = 'assets/images/icons8-ghost-48.png'; break;
-      case 'binding': iconOptions.iconUrl = 'assets/images/pineapple.png'; break;
-      // default: iconOptions.iconUrl = 'assets/marker-icon.png'; break;
-    }
-    return icon(iconOptions);
-  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('Onchanges');
@@ -63,7 +88,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         }
         // console.log('type: ' + type);
         return marker(latLng(coordinates[1], coordinates[0]), {
-          icon: this.createIcon(item, type)
+          icon: LeafletMapComponent.createIcon(item, type)
         }).on('click', () => {
           console.log('click on marker: ' + item.id);
           this._ngZone.run(() => {
@@ -85,6 +110,9 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   onMapReady(map: Map) {
     console.log('map ready');
     this.map = map;
+    LeafletMapComponent.createLegend(map);
   }
+
+
 
 }
