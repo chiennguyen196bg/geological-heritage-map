@@ -18,7 +18,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
 
   options: any;
-  layers: any[];
+  markers: any[] = [];
   map: Map;
 
   private static createIcon(item: Heritage, type = 'default'): Icon {
@@ -78,7 +78,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
     console.log('Onchanges');
     console.log(this.data);
     if (this.data) {
-      this.layers = this.data.map(item => {
+      this.markers = this.data.map(item => {
         const coordinates = item.geometry.coordinates;
         let type = null;
         if (this.bindingPoints && this.bindingPoints.indexOf(item) > -1) {
