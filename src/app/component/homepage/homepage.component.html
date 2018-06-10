@@ -9,9 +9,10 @@
   </p-sidebar>
 </div>
 <div id="result-sidebar">
-  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)">
+  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)" class="result-sidebar">
+    <span>Có {{searchResults?.length}} kết quả</span>
     <div style="overflow: auto; height: 100%;">
-      <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="5" [paginator]="true">
+      <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="4" [paginator]="true">
         <p-column field="id" header="ID"></p-column>
         <p-column field="name" header="Tên"></p-column>
         <p-column field="type" header="Loại"></p-column>

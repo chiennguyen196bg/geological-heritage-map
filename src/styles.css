@@ -12,3 +12,19 @@ section {
     max-width: 12px;
     max-height: 12px;
 }
+
+#result-sidebar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 111111;
+}
+
+#result-sidebar .ui-sidebar {
+    position: relative;
+    z-index: 111111;
+}
+
+#result-sidebar .ui-sidebar-bottom {
+    height: 100%;
+}
