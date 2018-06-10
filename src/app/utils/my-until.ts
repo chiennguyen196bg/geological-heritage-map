@@ -1,28 +1,44 @@
-import { IconOptions, Icon, icon, Control, DomUtil, Map, LatLng, LatLngBoundsExpression, LatLngBounds } from 'leaflet';
+import { Icon, icon, Control, DomUtil, Map, LatLng, divIcon } from 'leaflet';
 import { Heritage } from '../class/heritage';
 import { heritageTypeConfig } from '../config/heritage-type';
 
 export class MyUntil {
-    public static createIcon(item: Heritage, type = 'default'): Icon {
-        let iconOptions: IconOptions;
-        let iconUrl = 'assets/marker-icon.png';
+
+    private static getIconUrl(item: Heritage, type = null, _default = 'assets/marker-icon.png') {
         for (const config of heritageTypeConfig) {
             if (item.type === config.name) {
-                iconUrl = config.image_url;
-                break;
+                return config.image_url;
             }
         }
-        iconOptions = {
-            iconUrl: iconUrl,
-            iconSize: [25, 25],
-            iconAnchor: [13, 25],
-        };
+        return _default;
+    }
+
+    public static createIcon(item: Heritage, type = 'default'): Icon {
+        let iconUrl = this.getIconUrl(item, type);
         switch (type) {
-            case 'marked': iconOptions.iconUrl = 'assets/images/icons8-ghost-48.png'; break;
-            case 'binding': iconOptions.iconUrl = 'assets/images/pineapple.png'; break;
-            // default: iconOptions.iconUrl = 'assets/marker-icon.png'; break;
+            case 'marked': iconUrl = 'assets/images/icons8-ghost-48.png'; break;
+            case 'binding': iconUrl = 'assets/images/pineapple.png'; break;
         }
-        return icon(iconOptions);
+        return icon({
+            iconUrl: iconUrl,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+        });
+    }
+
+    public static createDivIcon(item: Heritage, type = 'default') {
+        let iconUrl = this.getIconUrl(item, type);
+        switch (type) {
+            case 'marked': iconUrl = 'assets/images/icons8-ghost-48.png'; break;
+            case 'binding': iconUrl = 'assets/images/pineapple.png'; break;
+        }
+        return divIcon({
+            html: '<img src="' + iconUrl + '"/> ' + item.label,
+            className: 'div-icon',
+            iconSize: [25, 25],
+            iconAnchor: [13, 13],
+        });
+
     }
 
     public static createLegend(map: Map) {
