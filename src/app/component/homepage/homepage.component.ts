@@ -14,11 +14,12 @@ export class HomepageComponent implements OnInit {
   @ViewChild(LeafletMapComponent)
   private leafletMapComponent: LeafletMapComponent;
 
-  items: MenuItem[];
+  items: MenuItem[] = [
+    { label: 'Di sản địa chất' }
+  ];
   searchSidebarDisplay: any;
   resultSidebarDisplay: any;
   data: Heritage[] = [];
-  title = 'hello world';
   selectedHeritage: Heritage;
   searchResults: Heritage[];
 
@@ -27,11 +28,6 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.title = 'Hkjhdjh';
-    this.items = [
-      { label: 'Di sản địa chất' },
-    ];
-
     this.heritageService.getHeritages().subscribe(data => {
       this.data = data;
       // console.log(this.data);
@@ -40,19 +36,34 @@ export class HomepageComponent implements OnInit {
 
   public onMarkerClicked(item: Heritage) {
     this.selectedHeritage = item;
-    console.log('Catch event ' + item.sign);
+    console.log('Catch event ' + item.id);
     console.log(this.selectedHeritage);
   }
 
   public onSearched(data: Heritage[]) {
-    console.log(data);
+    // console.log(data);
     this.searchResults = data;
   }
 
   public onResultSelected(e) {
-    console.log(e.data);
+    // console.log(e.data);
     this.leafletMapComponent.flyToHeritage(e.data);
     this.selectedHeritage = e.data;
+  }
+
+  public onSearchResultSidebarHide(e) {
+    console.log('On hide search results sidebar hide');
+    this.searchResults = [];
+  }
+
+  public onSeeMore() {
+    console.log(this.selectedHeritage.attachedFile);
+    window.open(this.selectedHeritage.attachedFile, '_blank');
+  }
+
+  public onDrawed(heritages: Heritage[]) {
+    this.searchResults = heritages;
+    this.resultSidebarDisplay = true;
   }
 
 }

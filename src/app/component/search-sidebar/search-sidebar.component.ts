@@ -32,13 +32,13 @@ export class SearchSidebarComponent implements OnInit {
   }
 
   suggestName(event) {
-    this.heritageService.suggest(event.query, 'sign').subscribe(data => this.nameResults = data);
+    this.heritageService.suggest(event.query, 'name').subscribe(data => this.nameResults = data);
   }
   suggestDistrictName(event) {
     this.heritageService.suggest(event.query, 'district').subscribe(data => this.districtNameResults = data);
   }
   suggestCommuneName(event) {
-    this.heritageService.suggest(event.query, 'location').subscribe(data => this.communeNameResults = data);
+    this.heritageService.suggest(event.query, 'commune').subscribe(data => this.communeNameResults = data);
   }
 
 }

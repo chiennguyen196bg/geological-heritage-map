@@ -1,6 +1,5 @@
 <header>
   <p-menubar [model]="items">
-    <!-- <input type="text" pInputText placeholder="Search"> -->
     <button pButton label="Tìm kiếm" icon="fa-search" (click)="searchSidebarDisplay = true"></button>
   </p-menubar>
 </header>
@@ -10,15 +9,16 @@
   </p-sidebar>
 </div>
 <div id="result-sidebar">
-  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000">
+  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)" class="result-sidebar">
+    <span>Có {{searchResults?.length}} kết quả</span>
     <div style="overflow: auto; height: 100%;">
-      <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="5" [paginator]="true">
-        <p-column field="sign" header="Kí hiệu"></p-column>
-        <p-column field="featured" header="Đặc điểm"></p-column>
-        <p-column field="location" header="Vị trí"></p-column>
+      <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="4" [paginator]="true">
+        <p-column field="id" header="ID"></p-column>
+        <p-column field="name" header="Tên"></p-column>
         <p-column field="type" header="Loại"></p-column>
-        <p-column field="x" header="X"></p-column>
-        <p-column field="y" header="Y"></p-column>
+        <p-column field="label" header="Ký hiệu"></p-column>
+        <p-column field="commune" header="Xã"></p-column>
+        <p-column field="district" header="Huyện"></p-column>
       </p-dataTable>
     </div>
   </p-sidebar>
@@ -27,26 +27,31 @@
 <section id="content">
   <div class="ui-g ui-md">
     <div class="ui-g-12 ui-md-9">
-      <app-leaflet-map [data]="data" (markerClicked)="onMarkerClicked($event)"></app-leaflet-map>
+      <app-leaflet-map 
+        [data]="data" 
+        [markedPoints]='searchResults' 
+        [bindingPoints]="[selectedHeritage]" 
+        (markerClicked)="onMarkerClicked($event)"
+        (drawed)="onDrawed($event)">
+      </app-leaflet-map>
     </div>
     <div class="ui-g-12 ui-md-3">
-      <p-panel header="Chi tiết điểm di sản" [style]="{'margin-bottom':'20px'}">
+      <p-panel header="Đặc điểm di sản" [style]="{'margin-bottom':'20px'}">
         <div *ngIf="selectedHeritage">
-          <b>Kí hiệu: </b>{{selectedHeritage?.sign}}
+          <b>Tên: </b>{{selectedHeritage?.name}}
           <br>
-          <b>Đặc điểm: </b>{{selectedHeritage?.featured}}
+          <b>Kiểu: </b>{{selectedHeritage?.type}}
           <br>
-          <b>Loại: </b>{{selectedHeritage?.type}}
+          <b>Ký hiệu: </b>{{selectedHeritage?.label}}
           <br>
-          <b>Vị trí: </b>{{selectedHeritage?.location}}
+          <b>Huyện: </b>{{selectedHeritage?.district}}
           <br>
-          <b>X: </b>{{selectedHeritage?.x}}
+          <b>Xã: </b>{{selectedHeritage?.commune}}
           <br>
-          <b>Y: </b>{{selectedHeritage?.y}}
-          <br>
-          <b>File đính kèm: </b>
-          <a href="{{selectedHeritage?.attachedFile}}">Link</a>
-          <br>
+        </div>
+        <div *ngIf="selectedHeritage" style="margin-top: 1em">
+          <button pButton label="Reset" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
+          <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()"></button>
         </div>
       </p-panel>
     </div>

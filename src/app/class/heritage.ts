@@ -1,20 +1,10 @@
 export class Heritage {
-    // id: number;
-    // name: string;
-    // localName: string;
-    // coordinates: any;
-    // district: string;
-    // commune: string;
-    // village: string;
-    // scale: string;
-    // areaSize: number;
-    sign: string;
-    featured: string;
-    location: string;
+    id: string;
+    name: string;
+    type: string;
+    label: string;
     attachedFile: string;
-    x: string;
-    y: string;
-    type: [string];
+    commune: string;
     district: string;
     geometry: {
         type: string;
