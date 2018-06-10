@@ -1,6 +1,5 @@
 <header>
   <p-menubar [model]="items">
-    <!-- <input type="text" pInputText placeholder="Search"> -->
     <button pButton label="Tìm kiếm" icon="fa-search" (click)="searchSidebarDisplay = true"></button>
   </p-menubar>
 </header>
@@ -31,7 +30,8 @@
         [data]="data" 
         [markedPoints]='searchResults' 
         [bindingPoints]="[selectedHeritage]" 
-        (markerClicked)="onMarkerClicked($event)">
+        (markerClicked)="onMarkerClicked($event)"
+        (drawed)="onDrawed($event)">
       </app-leaflet-map>
     </div>
     <div class="ui-g-12 ui-md-3">

@@ -7,6 +7,7 @@ import { NgprimeModule } from './ngprime/ngprime.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { HttpClientModule } from '@angular/common/http';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './component/homepage/homepage.component';
@@ -29,7 +30,8 @@ import { SearchSidebarComponent } from './component/search-sidebar/search-sideba
     BrowserAnimationsModule,
     LeafletModule.forRoot(),
     HttpClientModule,
-    LeafletMarkerClusterModule
+    LeafletMarkerClusterModule,
+    LeafletDrawModule.forRoot()
   ],
   providers: [
     HeritageService

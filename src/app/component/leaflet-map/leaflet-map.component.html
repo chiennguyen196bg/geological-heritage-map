@@ -1,4 +1,10 @@
 <p-card>
-  <div style="height: 500px;" leaflet [leafletOptions]="options" [leafletMarkerCluster]="markers" (leafletMapReady)="onMapReady($event)">
+  <div style="height: 500px;" 
+    leaflet 
+    leafletDraw
+    [leafletOptions]="leafletOptions" 
+    [leafletMarkerCluster]="markers" 
+    [leafletDrawOptions]="drawOptions"
+    (leafletMapReady)="onMapReady($event)">
   </div>
 </p-card>

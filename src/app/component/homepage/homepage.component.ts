@@ -14,11 +14,12 @@ export class HomepageComponent implements OnInit {
   @ViewChild(LeafletMapComponent)
   private leafletMapComponent: LeafletMapComponent;
 
-  items: MenuItem[];
+  items: MenuItem[] = [
+    { label: 'Di sản địa chất' }
+  ];
   searchSidebarDisplay: any;
   resultSidebarDisplay: any;
   data: Heritage[] = [];
-  title = 'hello world';
   selectedHeritage: Heritage;
   searchResults: Heritage[];
 
@@ -27,11 +28,6 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.title = 'Hkjhdjh';
-    this.items = [
-      { label: 'Di sản địa chất' },
-    ];
-
     this.heritageService.getHeritages().subscribe(data => {
       this.data = data;
       // console.log(this.data);
@@ -63,6 +59,11 @@ export class HomepageComponent implements OnInit {
   public onSeeMore() {
     console.log(this.selectedHeritage.attachedFile);
     window.open(this.selectedHeritage.attachedFile, '_blank');
+  }
+
+  public onDrawed(heritages: Heritage[]) {
+    this.searchResults = heritages;
+    this.resultSidebarDisplay = true;
   }
 
 }

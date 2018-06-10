@@ -40,6 +40,7 @@ export class HeritageService {
       _.commune = item.properties['Xa'];
       _.district = item.properties['Huyen'];
       _.geometry = item['geometry'];
+      _.geometry.coordinates.reverse();
       return _;
     });
   }
