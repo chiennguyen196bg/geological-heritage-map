@@ -1,6 +1,6 @@
 <header>
-  <p-menubar [model]="items">
-    <button pButton label="Tìm kiếm" icon="fa-search" (click)="searchSidebarDisplay = true"></button>
+  <p-menubar [model]="items" styleClass="my-menubar">
+    <button pButton label="Tìm kiếm" class="ui-button-success" icon="fa-search" (click)="searchSidebarDisplay = true"></button>
   </p-menubar>
 </header>
 <div id="search-sidebar">
@@ -26,7 +26,7 @@
 
 <section id="content">
   <div class="ui-g ui-md">
-    <div class="ui-g-12 ui-md-9">
+    <div class="ui-g-12 ui-md-9" style="padding: 0px;">
       <app-leaflet-map 
         [data]="data" 
         [markedPoints]='searchResults' 
@@ -35,9 +35,9 @@
         (drawed)="onDrawed($event)">
       </app-leaflet-map>
     </div>
-    <div class="ui-g-12 ui-md-3">
-      <p-panel header="Đặc điểm di sản" [style]="{'margin-bottom':'20px'}">
-        <div *ngIf="selectedHeritage">
+    <div class="ui-g-12 ui-md-3" style="padding-top: 0px;">
+      <p-panel *ngIf="selectedHeritage" header="Đặc điểm di sản" styleClass="my-panel-header" [style]="{'margin-bottom':'20px'}">
+        <div>
           <b>Tên: </b>{{selectedHeritage?.name}}
           <br>
           <b>Kiểu: </b>{{selectedHeritage?.type}}
@@ -50,7 +50,7 @@
           <br>
         </div>
         <div *ngIf="selectedHeritage" style="margin-top: 1em">
-          <button pButton label="Reset" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
+          <button pButton label="Reset" class="ui-button-warning" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
           <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()"></button>
         </div>
       </p-panel>
@@ -58,4 +58,7 @@
   </div>
 </section>
 <footer>
+  <div class="alert alert-warning">
+    Bản quyền thuộc về <strong>BTTNVN.</strong>
+  </div>
 </footer>

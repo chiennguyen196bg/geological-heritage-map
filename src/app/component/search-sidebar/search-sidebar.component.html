@@ -1,13 +1,13 @@
 <div>
-  <h3 class="first">Tên di sản</h3>
+  <h4 class="first">Tên di sản:</h4>
   <!-- <input id="input" type="text" size="30" pInputText [(ngModel)]="name"> -->
   <p-autoComplete [(ngModel)]="name" [suggestions]="nameResults" (completeMethod)="suggestName($event)"></p-autoComplete>
-  <h3 class="first">Tên huyện</h3>
+  <h4 class="first">Tên huyện:</h4>
   <!-- <input id="input" type="text" size="30" pInputText [(ngModel)]="districtName"> -->
   <p-autoComplete [(ngModel)]="districtName" [suggestions]="districtNameResults" (completeMethod)="suggestDistrictName($event)"></p-autoComplete>
-  <h3 class="first">Tên xã</h3>
+  <h4 class="first">Tên xã:</h4>
   <!-- <input id="input" type="text" size="30" pInputText [(ngModel)]="communeName"> -->
   <p-autoComplete [(ngModel)]="communeName" [suggestions]="communeNameResults" (completeMethod)="suggestCommuneName($event)"></p-autoComplete>
-  <button style="margin-top: 1em" pButton label="Tìm kiếm" icon="fa-search" (click)="search()"></button>
-  <button style="margin-top: 1em" pButton label="Reset" icon="fa-undo" (click)="name = ''; districtName = ''; communeName = ''"></button>
+  <button style="margin-top: 1em" pButton class="ui-button-success" label="Tìm kiếm" icon="fa-search" (click)="search()"></button>
+  <button style="margin-top: 1em" pButton class="ui-button-warning" label="Reset" icon="fa-undo" (click)="name = ''; districtName = ''; communeName = ''"></button>
 </div>

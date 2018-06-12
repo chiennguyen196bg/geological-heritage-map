@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { HeritageService } from '../../service/heritage.service';
 import { Heritage } from '../../class/heritage';
@@ -8,7 +8,8 @@ import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css']
+  styleUrls: ['./homepage.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class HomepageComponent implements OnInit {
   @ViewChild(LeafletMapComponent)
