@@ -3,3 +3,14 @@
 @media only screen and (min-width: 768px)  { .leaflet-map-style{ height: 400px; } }
 @media only screen and (min-width: 1024px) { .leaflet-map-style{ height: 500px; } }
 @media only screen and (min-width: 1900px) { .leaflet-map-style{ height: 600px; } }
+
+:host ::ng-deep .legend {
+    background-color:rgba(255,255,255,0.8);
+    padding: 2px;
+    border-radius: 5px;
+ }
+
+ :host ::ng-deep .legend img {
+    max-width: 12px;
+    max-height: 12px;
+}

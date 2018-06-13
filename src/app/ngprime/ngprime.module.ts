@@ -11,6 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AccordionModule } from 'primeng/accordion';
 import { DataTableModule } from 'primeng/datatable';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     InputTextModule,
     AccordionModule,
     DataTableModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    MultiSelectModule
   ],
   exports: [
     MenubarModule,
@@ -36,7 +38,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     InputTextModule,
     AccordionModule,
     DataTableModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    MultiSelectModule
   ],
   declarations: []
 })

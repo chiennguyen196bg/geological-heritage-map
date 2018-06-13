@@ -2,16 +2,6 @@
 section {
     margin: 1em 0;
 }
-.legend {
-    background-color:rgba(255,255,255,0.8);
-    padding: 2px;
-    border-radius: 5px;
- }
-
-.legend img {
-    max-width: 12px;
-    max-height: 12px;
-}
 
 #result-sidebar {
     position: fixed;
@@ -27,4 +17,8 @@ section {
 
 #result-sidebar .ui-sidebar-bottom {
     height: 100%;
+}
+.ui-menuitem-text {
+    text-transform: uppercase;
+    font-weight: bold;
 }
