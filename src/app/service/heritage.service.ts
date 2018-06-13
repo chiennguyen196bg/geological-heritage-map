@@ -73,4 +73,65 @@ export class HeritageService {
     );
   }
 
+  public getDistinstValues(fieldName: string): Observable<string[]> {
+    return this.getHeritages().pipe(
+      map(data => {
+        const set = new Set(data.map(item => item[fieldName]));
+        return Array.from(set);
+      })
+    );
+  }
+
+  public search(...searchObjects: SearchObject[]): Observable<Heritage[]> {
+    return this.getHeritages().pipe(
+      map(data => {
+        searchObjects.forEach(ele => {
+          if (ele.type === 'single') {
+            if (Array.isArray(ele.value)) {
+              throw new TypeError('Value field must be string, not array.');
+            }
+            data = data.filter(item => item[ele.field].toLocaleLowerCase().indexOf((ele.value as string).toLocaleLowerCase()) > -1);
+          } else {
+            if (!Array.isArray(ele.value)) {
+              throw new TypeError('Value field must be array');
+            }
+            if (ele.type === 'or') {
+              data = data.filter(item => this.orFilter(item, ele.field, ele.value as string[]));
+            } else if (ele.type === 'and') {
+              data = data.filter(item => this.andFilter(item, ele.field, ele.value as string[]));
+            } else {
+              throw new TypeError('Type is not supported');
+            }
+          }
+        });
+        return data;
+      })
+    );
+  }
+
+  private andFilter(data: Heritage, field: string, value: string[]): boolean {
+    for (let i = 0; i < value.length; i++) {
+      const element = value[i];
+      if (data[field].toLocaleLowerCase().indexOf(element.toLocaleLowerCase()) === -1) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private orFilter(data: Heritage, field: string, value: string[]): boolean {
+    for (let i = 0; i < value.length; i++) {
+      const element = value[i];
+      if (data[field].toLocaleLowerCase() === element.toLocaleLowerCase()) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+export interface SearchObject {
+  field: string;
+  value: string[] | string;
+  type: 'and' | 'or' | 'single';
 }
