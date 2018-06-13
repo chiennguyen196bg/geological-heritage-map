@@ -1,0 +1,7 @@
+:host ::ng-deep .ui-multiselect-header {
+    background: aliceblue;
+}
+
+:host ::ng-deep .input-field,:host ::ng-deep .input-field input {
+    width: 100%;
+}
