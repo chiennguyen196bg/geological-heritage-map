@@ -10,7 +10,11 @@
 </div>
 <div id="result-sidebar">
   <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)" class="result-sidebar">
-    <span>Có {{searchResults?.length}} kết quả</span>
+    <div class="result-info">
+        <span>Có {{searchResults?.length}} kết quả</span>
+        <button style="margin-top: 1em" pButton class="ui-button-success" label="Export excel" icon="fa-search" (click)="exportExcel()"></button>
+    </div>
+    
     <div style="overflow: auto; height: 100%;">
       <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="4" [paginator]="true">
         <p-column field="id" header="ID"></p-column>

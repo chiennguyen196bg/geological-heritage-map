@@ -14,6 +14,7 @@ import { HomepageComponent } from './component/homepage/homepage.component';
 import { HeritageService } from './service/heritage.service';
 import { LeafletMapComponent } from './component/leaflet-map/leaflet-map.component';
 import { SearchSidebarComponent } from './component/search-sidebar/search-sidebar.component';
+import { ExcelService } from './service/excel.service';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { SearchSidebarComponent } from './component/search-sidebar/search-sideba
     LeafletDrawModule.forRoot()
   ],
   providers: [
-    HeritageService
+    HeritageService,
+    ExcelService
   ],
   bootstrap: [AppComponent]
 })
