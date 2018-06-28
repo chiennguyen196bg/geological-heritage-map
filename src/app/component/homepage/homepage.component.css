@@ -37,4 +37,10 @@ footer {
 
 .result-info {
     padding: 1em;
+    /* display: flex; */
+    /* justify-content: space-around; */
+}
+
+:ng-deep .result-info button {
+    margin-left: 1em;
 }

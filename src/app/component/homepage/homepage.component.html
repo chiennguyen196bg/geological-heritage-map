@@ -12,7 +12,7 @@
   <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)" class="result-sidebar">
     <div class="result-info">
         <span>Có {{searchResults?.length}} kết quả</span>
-        <button style="margin-top: 1em" pButton class="ui-button-success" label="Export excel" icon="fa-search" (click)="exportExcel()"></button>
+        <button style="margin-left: 1em" pButton class="ui-button-success" label="Export excel" icon="fa-file-excel-o" (click)="exportExcel()"></button>
     </div>
     
     <div style="overflow: auto; height: 100%;">

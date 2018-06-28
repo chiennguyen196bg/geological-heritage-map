@@ -1,5 +1,5 @@
 export class Heritage {
-    id: string;
+    id: number;
     name: string;
     type: string;
     label: string;
