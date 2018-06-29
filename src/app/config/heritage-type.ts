@@ -2,8 +2,8 @@ export const heritageTypeConfig = [
     {
         'name': 'A_Cổ Sinh',
         'image_url': 'assets/images/A_Cổ Sinh.png',
-        'marked_image_url': 'assets/images/A_Cổ Sinh.png',
-        'binding_image_url': 'assets/images/A_Cổ Sinh (1).png',
+        'marked_image_url': 'assets/images/A_Cổ Sinh.gif',
+        'binding_image_url': 'assets/images/A_Cổ Sinh (1).gif',
     },
     {
         'name': 'B_Địa mạo (cảnh quan)',
