@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { HeritageService } from '../../service/heritage.service';
 import { Heritage } from '../../class/heritage';
 import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
+import { ExcelService } from '../../service/excel.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class HomepageComponent implements OnInit {
   searchResults: Heritage[];
 
   constructor(
-    private heritageService: HeritageService
+    private heritageService: HeritageService,
+    private excelService: ExcelService
   ) { }
 
   ngOnInit() {
@@ -65,6 +67,10 @@ export class HomepageComponent implements OnInit {
   public onDrawed(heritages: Heritage[]) {
     this.searchResults = heritages;
     this.resultSidebarDisplay = true;
+  }
+
+  public exportExcel() {
+    this.excelService.exportAsExcelFile(this.searchResults, 'result');
   }
 
 }

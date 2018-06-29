@@ -16,12 +16,12 @@ export class SearchSidebarComponent implements OnInit {
   selectedCommunes = [];
   nameSuggestion: string[];
   types = [
-    { label: 'A', value: 'A' },
-    { label: 'B', value: 'B' },
-    { label: 'C', value: 'C' },
-    { label: 'D', value: 'D' },
-    { label: 'E', value: 'E' },
-    { label: 'F', value: 'F' },
+    { label: 'A_Cổ sinh', value: 'A' },
+    { label: 'B_Địa mạo', value: 'B' },
+    { label: 'C_Cổ môi trường', value: 'C' },
+    { label: 'D_Đá', value: 'D' },
+    { label: 'E_Địa tầng', value: 'E' },
+    { label: 'F_Khoáng vật, khoáng sản', value: 'F' },
   ];
   selectedTypes = [];
   @Output() searched = new EventEmitter<Heritage[]>();

@@ -62,7 +62,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
     if (this.data) {
       this.markers = this.data.map(item => {
         const coordinates = item.geometry.coordinates;
-        let type = null;
+        let type = 'default';
         if (this.bindingPoints && this.bindingPoints.indexOf(item) > -1) {
           type = 'binding';
         } else if (this.markedPoints && this.markedPoints.indexOf(item) > -1) {
@@ -70,7 +70,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         }
         // console.log('type: ' + type);
         return marker(latLng(coordinates[0], coordinates[1]), {
-          icon: MyUntil.createIcon(item, type)
+          icon: MyUntil.createDivIcon(item, type)
         }).on('click', () => {
           console.log('click on marker: ' + item.id);
           this._ngZone.run(() => {
