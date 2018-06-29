@@ -4,10 +4,18 @@ import { heritageTypeConfig } from '../config/heritage-type';
 
 export class MyUntil {
 
-    private static getIconUrl(item: Heritage, type = null, _default = 'assets/marker-icon.png') {
+    private static getIconUrl(item: Heritage, type = 'default', _default = 'assets/marker-icon.png') {
         for (const config of heritageTypeConfig) {
             if (item.type === config.name) {
-                return config.image_url;
+                if (type === 'default') {
+                    return config.image_url || _default;
+                }
+                if (type == 'binding') {
+                    return config.binding_image_url || _default;
+                }
+                if (type == 'marked') {
+                    return config.marked_image_url || _default;
+                }
             }
         }
         return _default;
@@ -15,10 +23,7 @@ export class MyUntil {
 
     public static createIcon(item: Heritage, type = 'default'): Icon {
         let iconUrl = this.getIconUrl(item, type);
-        switch (type) {
-            case 'marked': iconUrl = 'assets/images/icons8-ghost-48.png'; break;
-            case 'binding': iconUrl = 'assets/images/pineapple.png'; break;
-        }
+
         return icon({
             iconUrl: iconUrl,
             iconSize: [20, 20],
@@ -28,15 +33,11 @@ export class MyUntil {
 
     public static createDivIcon(item: Heritage, type = 'default') {
         let iconUrl = this.getIconUrl(item, type);
-        switch (type) {
-            case 'marked': iconUrl = 'assets/images/icons8-ghost-48.png'; break;
-            case 'binding': iconUrl = 'assets/images/pineapple.png'; break;
-        }
         return divIcon({
-            html: '<img src="' + iconUrl + '"/> ' + item.label,
+            html: '<img src="' + iconUrl + '"/> ' + '<span>' + item.label + '</span>',
             className: 'div-icon',
-            iconSize: [25, 25],
-            iconAnchor: [13, 13],
+            iconSize: null,
+            iconAnchor: [10, 10],
         });
 
     }
