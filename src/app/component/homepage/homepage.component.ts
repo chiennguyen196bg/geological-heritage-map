@@ -73,4 +73,8 @@ export class HomepageComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.searchResults, 'result');
   }
 
+  public printDirectly() {
+    this.excelService.printDirectly(this.searchResults);
+  }
+
 }

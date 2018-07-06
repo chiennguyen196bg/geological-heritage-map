@@ -10,10 +10,10 @@ export class MyUntil {
                 if (type === 'default') {
                     return config.image_url || _default;
                 }
-                if (type == 'binding') {
+                if (type === 'binding') {
                     return config.binding_image_url || _default;
                 }
-                if (type == 'marked') {
+                if (type === 'marked') {
                     return config.marked_image_url || _default;
                 }
             }
@@ -22,7 +22,7 @@ export class MyUntil {
     }
 
     public static createIcon(item: Heritage, type = 'default'): Icon {
-        let iconUrl = this.getIconUrl(item, type);
+        const iconUrl = this.getIconUrl(item, type);
 
         return icon({
             iconUrl: iconUrl,
@@ -32,7 +32,7 @@ export class MyUntil {
     }
 
     public static createDivIcon(item: Heritage, type = 'default') {
-        let iconUrl = this.getIconUrl(item, type);
+        const iconUrl = this.getIconUrl(item, type);
         return divIcon({
             html: '<img src="' + iconUrl + '"/> ' + '<span>' + item.label + '</span>',
             className: 'div-icon',

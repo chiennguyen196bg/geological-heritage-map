@@ -26,7 +26,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   map: Map;
 
   private openStreetMapLayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' });
-  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 15, minZoom: 11, attribution: '...', opacity: 0.3 });
+  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...', opacity: 0.3 });
 
   // config
   leafletOptions = {
