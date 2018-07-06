@@ -1,8 +1,11 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
 import { Heritage } from '../../class/heritage';
-import { marker, tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle } from 'leaflet';
+import { marker, tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle, geoJSON, PathOptions } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
+import { layerConfig } from '../../config/layer-config';
+import { HttpClient } from '@angular/common/http';
+import { GeoJsonObject } from 'geojson';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -22,14 +25,32 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   markers: any[] = [];
   map: Map;
 
+  private openStreetMapLayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' });
+  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 15, minZoom: 11, attribution: '...', opacity: 0.3 });
+
   // config
   leafletOptions = {
     layers: [
-      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+      // tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
+      // tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...' })
+      // this.openStreetMapLayer,
+      this.customMapLayer
     ],
-    zoom: 10,
+    zoom: 11,
     center: latLng(12.4587489, 107.9188864)
   };
+
+  leafletLayersControl = {
+    baseLayers: {
+      // 'Open Street Map': tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
+      // 'Open Cycle Map': tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...' })
+      'Open Street Map': this.openStreetMapLayer,
+      'Custom Map': this.customMapLayer
+    },
+    overlays: {
+    }
+  };
+
   drawOptions = {
     position: 'topright',
     draw: {
@@ -49,11 +70,12 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   };
 
   constructor(
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    private http: HttpClient
   ) { }
   // var Esri_WorldImagery = L.;
   ngOnInit() {
-    console.log('On init');
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -92,6 +114,8 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   onMapReady(map: Map) {
     console.log('map ready');
     this.map = map;
+
+    // add editable layer to map and create event triggers
     map.addLayer(this.editableLayers);
     MyUntil.createLegend(map);
 
@@ -101,6 +125,15 @@ export class LeafletMapComponent implements OnInit, OnChanges {
     });
     map.on(Draw.Event.EDITED, (e: DrawEvents.Edited) => {
       this.emitInsideHeritages(e.layers.getLayers()[0]);
+    });
+
+    // them overlays on map
+    layerConfig.forEach((item) => {
+      this.http.get(item.layerUrl).subscribe(data => {
+        this.leafletLayersControl.overlays[item.layerName] = geoJSON<any>(data as GeoJsonObject, {
+          style: () => item.layerOption
+        });
+      });
     });
   }
 

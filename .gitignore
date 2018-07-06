@@ -42,3 +42,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+**/assets/data
+**/assets/layers
+**/assets/map
+*.rar
