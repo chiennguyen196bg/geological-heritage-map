@@ -32,11 +32,11 @@ export class MyUntil {
     }
 
     public static createDivIcon(item: Heritage, type = 'default') {
-        const iconUrl = this.getIconUrl(item, type);
+        // const iconUrl = this.getIconUrl(item, type);
         return divIcon({
-            html: '<img src="' + iconUrl + '"/> ' + '<span>' + item.label + '</span>',
+            html: `<span>${item.id}</span>`,
             className: 'div-icon',
-            iconSize: null,
+            iconSize: [20, 20],
             iconAnchor: [10, 10],
         });
 
