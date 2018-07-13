@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
-import { Heritage } from '../../class/heritage';
 import { marker, tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle, geoJSON, PathOptions } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
 import { HttpClient } from '@angular/common/http';
 import { GeoJsonObject } from 'geojson';
+import { Heritage } from '../../models/heritage';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -25,8 +25,8 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   markers: any[] = [];
   map: Map;
 
-  private openStreetMapLayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' });
-  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...', opacity: 0.3 });
+  private openStreetMapLayer = tileLayer('', { maxZoom: 18, attribution: '...' });
+  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, minZoom: 11, attribution: '...', opacity: 0.3 });
 
   // config
   leafletOptions = {
@@ -37,7 +37,9 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       this.customMapLayer
     ],
     zoom: 11,
-    center: latLng(12.4587489, 107.9188864)
+    center: latLng(12.4587489, 107.9188864),
+    maxZoom: 17,
+    minZoom: 11
   };
 
   leafletLayersControl = {
@@ -94,7 +96,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         return marker(latLng(coordinates[0], coordinates[1]), {
           icon: MyUntil.createDivIcon(item, type)
         }).on('click', () => {
-          console.log('click on marker: ' + item.id);
+          console.log('click on marker: ' + item.TT);
           this._ngZone.run(() => {
             this.markerClicked.emit(item);
             // this.flyToHeritage(item);

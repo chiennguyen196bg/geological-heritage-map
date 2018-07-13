@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { HeritageService, SearchObject } from '../../service/heritage.service';
-import { Heritage } from '../../class/heritage';
 import { Observable } from 'rxjs/Observable';
 import { SelectItem } from 'primeng/api';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Heritage } from '../../models/heritage';
 
 @Component({
   selector: 'app-search-sidebar',
@@ -47,7 +47,7 @@ export class SearchSidebarComponent implements OnInit {
     if (this.selectedTypes.length > 0) {
       searchObjects.push({ field: 'label', value: this.selectedTypes, type: 'and' });
     }
-    this.heritageService.search(...searchObjects).subscribe(data => {
+    this.heritageService.search(searchObjects).subscribe(data => {
       this.searched.emit(data);
     });
   }
