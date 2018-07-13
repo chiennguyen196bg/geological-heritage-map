@@ -12,35 +12,25 @@ import { AccordionModule } from 'primeng/accordion';
 import { DataTableModule } from 'primeng/datatable';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
 
-
+const NG_MODULE = [
+  MenubarModule,
+  ButtonModule,
+  GMapModule,
+  PanelModule,
+  CardModule,
+  SidebarModule,
+  InputTextModule,
+  AccordionModule,
+  DataTableModule,
+  AutoCompleteModule,
+  MultiSelectModule,
+  DropdownModule
+];
 @NgModule({
-  imports: [
-    MenubarModule,
-    ButtonModule,
-    GMapModule,
-    PanelModule,
-    CardModule,
-    SidebarModule,
-    InputTextModule,
-    AccordionModule,
-    DataTableModule,
-    AutoCompleteModule,
-    MultiSelectModule
-  ],
-  exports: [
-    MenubarModule,
-    ButtonModule,
-    GMapModule,
-    PanelModule,
-    CardModule,
-    SidebarModule,
-    InputTextModule,
-    AccordionModule,
-    DataTableModule,
-    AutoCompleteModule,
-    MultiSelectModule
-  ],
+  imports: [...NG_MODULE],
+  exports: [...NG_MODULE],
   declarations: []
 })
 export class NgprimeModule { }

@@ -8,7 +8,7 @@
     <app-search-sidebar (searched)="onSearched($event); searchSidebarDisplay = false; resultSidebarDisplay = true"></app-search-sidebar>
   </p-sidebar>
 </div>
-<div id="result-sidebar">
+<div id="result-sidebar" *ngIf="resultSidebarDisplay">
   <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)" class="result-sidebar">
     <div class="result-info">
         <span>Có {{searchResults?.length}} kết quả</span>
@@ -18,12 +18,14 @@
     
     <div style="overflow: auto; height: 100%;">
       <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="4" [paginator]="true">
-        <p-column field="id" header="ID"></p-column>
-        <p-column field="name" header="Tên"></p-column>
-        <p-column field="type" header="Loại"></p-column>
-        <p-column field="label" header="Ký hiệu"></p-column>
-        <p-column field="commune" header="Xã"></p-column>
-        <p-column field="district" header="Huyện"></p-column>
+        <p-column field="TT" header="TT"></p-column>
+        <p-column field="TenDiSan" header="Tên"></p-column>
+        <p-column field="LoaiDiSan" header="Loại"></p-column>
+        <p-column field="KieuDiSan" header="Kiểu"></p-column>
+        <p-column field="HienTrangB" header="Hiện Trạng Bảo Vệ"></p-column>
+        <p-column field="Xa" header="Xã"></p-column>
+        <p-column field="Huyen" header="Huyện"></p-column>
+        <p-column field="ThongTinXe" header="Thông tin xếp hạng"></p-column>
       </p-dataTable>
     </div>
   </p-sidebar>
@@ -43,20 +45,28 @@
     <div class="ui-g-12 ui-md-3" style="padding-top: 0px;">
       <p-panel *ngIf="selectedHeritage" header="Đặc điểm di sản" styleClass="my-panel-header" [style]="{'margin-bottom':'20px'}">
         <div>
-          <b>Tên: </b>{{selectedHeritage?.name}}
+          <b>Tên: </b>{{selectedHeritage?.TenDiSan}}
           <br>
-          <b>Kiểu: </b>{{selectedHeritage?.type}}
+          <b>Loại: </b>{{selectedHeritage?.LoaiDiSan}}
           <br>
-          <b>Ký hiệu: </b>{{selectedHeritage?.label}}
+          <b>Kiểu: </b>{{selectedHeritage?.KieuDiSan}}
           <br>
-          <b>Huyện: </b>{{selectedHeritage?.district}}
+          <b>Hiện trạng bảo vệ: </b>{{selectedHeritage?.HienTrangB}}
           <br>
-          <b>Xã: </b>{{selectedHeritage?.commune}}
+          <b>Huyện: </b>{{selectedHeritage?.Huyen}}
+          <br>
+          <b>Xã: </b>{{selectedHeritage?.Xa}}
+          <br>
+          <b>Thông tin xếp hạng: </b>{{selectedHeritage?.ThongTinXe}}
+          <br>
+          <b>Khả Năng Tiếp Cận Mùa Khô: </b>{{selectedHeritage?.KhaNangTiepCanMuaKho}}
+          <br>
+          <b>Khả Năng Tiếp Cận Mùa Mưa: </b>{{selectedHeritage?.KhaNangTiepCanMuaMua}}
           <br>
         </div>
         <div *ngIf="selectedHeritage" style="margin-top: 1em">
           <button pButton label="Reset" class="ui-button-warning" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
-          <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()"></button>
+          <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()" *ngIf="selectedHeritage.Link"></button>
         </div>
       </p-panel>
     </div>

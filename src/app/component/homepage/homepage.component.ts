@@ -17,7 +17,7 @@ export class HomepageComponent implements OnInit {
   private leafletMapComponent: LeafletMapComponent;
 
   items: MenuItem[] = [
-    { label: 'Di sản địa chất' }
+    { label: 'CSDL Di sản tỉnh DakNong' }
   ];
   searchSidebarDisplay: any;
   resultSidebarDisplay: any;

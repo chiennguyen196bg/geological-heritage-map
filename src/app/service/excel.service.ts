@@ -27,7 +27,9 @@ export class ExcelService {
       'Huyện': heritage.Huyen,
       'Xã': heritage.Xa,
       'Kinh độ': heritage.geometry.coordinates[1],
-      'Vĩ độ': heritage.geometry.coordinates[0]
+      'Vĩ độ': heritage.geometry.coordinates[0],
+      'Hiện Trạng Bảo Vệ': heritage.HienTrangB,
+      'Thông tin xếp hạng': heritage.ThongTinXe
     };
   }
 

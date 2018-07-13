@@ -3,5 +3,5 @@
 }
 
 :host ::ng-deep .input-field,:host ::ng-deep .input-field input {
-    width: 100%;
+    min-width: 100%;
 }
