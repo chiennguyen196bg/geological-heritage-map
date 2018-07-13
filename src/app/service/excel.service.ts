@@ -28,6 +28,33 @@ export class ExcelService {
       'Xã': heritage.commune,
       'Kinh độ': heritage.geometry.coordinates[1],
       'Vĩ độ': heritage.geometry.coordinates[0]
-    }
+    };
   }
+
+  public printDirectly(json: Heritage[]) {
+    const data = json.sort((a, b) => (a.id - b.id)).map((item => this.convertHeritage(item)));
+    let html = '<table>';
+    html += '<tr>';
+    const keys = Object.keys(data[0]);
+    keys.forEach(key => {
+      html += `<th>${key}</th>`;
+    });
+    html += '</tr>';
+
+    data.forEach(item => {
+      html += '<tr>';
+      keys.forEach(key => {
+        html += `<td>${item[key]}</td>`;
+      });
+      html += '</tr>';
+    });
+
+    // console.log(html);
+    const newWin = window.open();
+    newWin.document.write(html);
+    newWin.print();
+    newWin.close();
+  }
+
+
 }
