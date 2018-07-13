@@ -19,12 +19,12 @@ export class SearchSidebarComponent {
   xa = [];
   huyen = [];
 
-  private loaiDiSanOptions = [
+  loaiDiSanOptions = [
     { label: 'Địa chất', value: 'Địa chất' },
     { label: 'Văn Hóa', value: 'Văn Hóa' }
   ];
 
-  private kieuDiSanDiaChatOption = [
+  kieuDiSanDiaChatOption = [
     { label: 'A_Cổ sinh', value: 'A' },
     { label: 'B_Địa mạo', value: 'B' },
     { label: 'C_Cổ môi trường', value: 'C' },
@@ -35,7 +35,7 @@ export class SearchSidebarComponent {
 
 
 
-  private kieuDiSanVanHoaOption = [];
+  kieuDiSanVanHoaOption = [];
 
 
 
