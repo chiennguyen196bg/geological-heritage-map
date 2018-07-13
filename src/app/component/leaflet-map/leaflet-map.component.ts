@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
-import { Heritage } from '../../class/heritage';
 import { marker, tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle, geoJSON, PathOptions } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
 import { HttpClient } from '@angular/common/http';
 import { GeoJsonObject } from 'geojson';
+import { Heritage } from '../../models/heritage';
+import { CulturalHeritage } from '../../models/cultural-heritage';
+import { GeologicalHeritage } from '../../models/geological-heritage';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -14,16 +16,16 @@ import { GeoJsonObject } from 'geojson';
 })
 export class LeafletMapComponent implements OnInit, OnChanges {
 
-  @Input() data: Heritage[];
-  @Input() markedPoints: Heritage[] = [];
-  @Input() bindingPoints: Heritage[] = [];
+  private culturalHeritages: CulturalHeritage[];
+  private geologicalHeritages: GeologicalHeritage[];
+
   @Output() markerClicked = new EventEmitter<Heritage>();
   @Output() drawed = new EventEmitter<Heritage[]>();
 
   // variable
-  editableLayers = new FeatureGroup();
-  markers: any[] = [];
-  map: Map;
+  private editableLayers = new FeatureGroup();
+  private markers: any[] = [];
+  private map: Map;
 
   private openStreetMapLayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' });
   private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...', opacity: 0.3 });

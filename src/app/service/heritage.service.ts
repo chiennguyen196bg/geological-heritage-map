@@ -1,70 +1,67 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Heritage } from '../class/heritage';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
+import { GeologicalHeritage } from '../models/geological-heritage';
+import { CulturalHeritage } from '../models/cultural-heritage';
+import { Heritage } from '../models/heritage';
+import { merge } from 'rxjs/observable/merge';
 
 @Injectable()
 export class HeritageService {
 
-  private _cache: Heritage[];
-  private _url = '/assets/data/DiemDiSan_0.json';
+  private _cache_geological_heritages: GeologicalHeritage[];
+  private _geological_heritages_url = '/assets/data/DiemDiSan_0.json';
+  private _cache_cultural_heriatages: CulturalHeritage[];
+  private _cultural_heritages_url = '/assets/data/DiemDiSan_0.json';
+
 
   constructor(
     private http: HttpClient
   ) { }
 
-  public getHeritages(): Observable<Heritage[]> {
-    if (this._cache) {
-      return of(this._cache);
+  public getGeologicalHeritages(): Observable<GeologicalHeritage[]> {
+    if (this._cache_geological_heritages) {
+      return of(this._cache_geological_heritages);
     } else {
-      return this.http.get(this._url).pipe(
-        map(res => {
-          this._cache = this.convertToModels(res['features']);
-          return this._cache;
-        })
-      );
+      return this.http.get<GeologicalHeritage[]>(this._geological_heritages_url);
     }
   }
 
-  private convertToModels(data: any[]): Heritage[] {
-    return data.map(item => {
-      // console.log(item);
-      const _ = new Heritage();
-      _.id = item.properties['ID'];
-      _.name = item.properties['Ten'];
-      _.type = item.properties['Kieu'];
-      _.label = item.properties['KyHieu'];
-      _.attachedFile = item.properties['attachedFile'];
-      _.commune = item.properties['Xa'];
-      _.district = item.properties['Huyen'];
-      _.geometry = item['geometry'];
-      _.geometry.coordinates.reverse();
-      return _;
-    });
+  public getCulturalHeritages(): Observable<CulturalHeritage[]> {
+    if (this._cache_cultural_heriatages) {
+      return of(this._cache_cultural_heriatages);
+    } else {
+      return this.http.get<CulturalHeritage[]>(this._cultural_heritages_url);
+    }
   }
 
-  public searchHeritages(name = '', districtName = '', communeName = ''): Observable<Heritage[]> {
-    name = name.trim().toLocaleLowerCase();
-    districtName = districtName.trim().toLocaleLowerCase();
-    communeName = communeName.trim().toLocaleLowerCase();
-    return this.getHeritages().pipe(
-      map(data => {
-        return data.filter((item: Heritage) => (item.name.toLocaleLowerCase().indexOf(name) > -1 || name === ''));
-      }),
-      map(data => {
-        return data.filter((item: Heritage) => (item.district.toLocaleLowerCase().indexOf(districtName) > -1 || districtName === ''));
-      }),
-      map(data => {
-        return data.filter((item: Heritage) => (item.commune.toLocaleLowerCase().indexOf(communeName) > -1 || communeName === ''));
-      }),
-    );
+  public getHeritages(type: HeritageType) {
+    let items: Observable<Heritage[]>;
+    if (type === HeritageType.GeologicalHeritage) {
+      items = this.getGeologicalHeritages();
+    }
+
+    switch (type) {
+      case HeritageType.GeologicalHeritage:
+        items = this.getGeologicalHeritages();
+        break;
+      case HeritageType.CulturalHeritage:
+        items = this.getCulturalHeritages();
+        break;
+      case HeritageType.Both:
+        items = merge(this.getCulturalHeritages(), this.getGeologicalHeritages());
+        break;
+      default:
+        items = of([]);
+    }
+    return items;
   }
 
-  public suggest(query: string, feild: string): Observable<string[]> {
+  public suggest(query: string, feild: string, type: HeritageType, searchObjects: SearchObject[]): Observable<string[]> {
     query = query.trim().toLocaleLowerCase();
-    return this.getHeritages().pipe(
+    return this.getHeritages(type).pipe(
       map(data => {
         const set = new Set(data.map(item => item[feild]));
         return Array.from(set);
@@ -73,8 +70,8 @@ export class HeritageService {
     );
   }
 
-  public getDistinstValues(fieldName: string): Observable<string[]> {
-    return this.getHeritages().pipe(
+  public getDistinstValues(fieldName: string, type: HeritageType, searchObjects): Observable<string[]> {
+    return this.getHeritages(type).pipe(
       map(data => {
         const set = new Set(data.map(item => item[fieldName]));
         return Array.from(set);
@@ -82,8 +79,8 @@ export class HeritageService {
     );
   }
 
-  public search(...searchObjects: SearchObject[]): Observable<Heritage[]> {
-    return this.getHeritages().pipe(
+  public search(searchObjects: SearchObject[], type: HeritageType): Observable<Heritage[]> {
+    return this.getHeritages(type).pipe(
       map(data => {
         searchObjects.forEach(ele => {
           if (ele.type === 'single') {
@@ -134,4 +131,10 @@ export interface SearchObject {
   field: string;
   value: string[] | string;
   type: 'and' | 'or' | 'single';
+}
+
+export enum HeritageType {
+  GeologicalHeritage,
+  CulturalHeritage,
+  Both
 }
