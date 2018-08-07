@@ -5,35 +5,13 @@
 </header>
 <div id="search-sidebar">
   <p-sidebar [(visible)]="searchSidebarDisplay" styleClass="ui-sidebar-sm" position="right" [baseZIndex]="10000">
-    <app-search-sidebar (searched)="onSearched($event); searchSidebarDisplay = false; resultSidebarDisplay = true"></app-search-sidebar>
-  </p-sidebar>
-</div>
-<div id="result-sidebar" *ngIf="resultSidebarDisplay">
-  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)" class="result-sidebar">
-    <div class="result-info">
-        <span>Có {{searchResults?.length}} kết quả</span>
-        <button style="margin-left: 1em" pButton class="ui-button-success" label="Export excel" icon="fa-file-excel-o" (click)="exportExcel()"></button>
-        <button style="margin-left: 1em" pButton class="ui-button-success" label="Print" icon="fa-print" (click)="printDirectly()"></button>
-    </div>
-    
-    <div style="overflow: auto; height: 100%;">
-      <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="4" [paginator]="true">
-        <p-column field="TT" header="TT"></p-column>
-        <p-column field="TenDiSan" header="Tên"></p-column>
-        <p-column field="LoaiDiSan" header="Loại"></p-column>
-        <p-column field="KieuDiSan" header="Kiểu"></p-column>
-        <p-column field="HienTrangB" header="Hiện Trạng Bảo Vệ"></p-column>
-        <p-column field="Xa" header="Xã"></p-column>
-        <p-column field="Huyen" header="Huyện"></p-column>
-        <p-column field="ThongTinXe" header="Thông tin xếp hạng"></p-column>
-      </p-dataTable>
-    </div>
+    <app-search-sidebar (searched)="onSearched($event); searchSidebarDisplay = false;"></app-search-sidebar>
   </p-sidebar>
 </div>
 
 <section id="content">
-  <div class="ui-g ui-md" style="height: 100%;">
-    <div class="ui-g-12 ui-md-9" style="padding: 0px; height: 100%;">
+  <div class="ui-g ui-md">
+    <div class="ui-g-12 ui-md-9" style="padding: 0px;">
       <app-leaflet-map 
         [markedPoints]='searchResults' 
         [bindingPoints]="[selectedHeritage]" 
@@ -70,6 +48,9 @@
       </p-panel>
     </div>
   </div>
+</section>
+<section id="search-result" *ngIf="searchResults">
+  <app-search-result [searchResults]="searchResults" (resultSelected)="onResultSelected($event)"></app-search-result>
 </section>
 <!-- <footer>
   <div class="alert alert-warning">

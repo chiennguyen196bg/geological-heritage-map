@@ -20,13 +20,11 @@ export class HomepageComponent implements OnInit {
     { label: 'CSDL Di sản tỉnh DakNong' }
   ];
   searchSidebarDisplay: any;
-  resultSidebarDisplay: any;
   selectedHeritage: Heritage;
   searchResults: Heritage[];
 
   constructor(
-    private heritageService: HeritageService,
-    private excelService: ExcelService
+    private heritageService: HeritageService
   ) { }
 
   ngOnInit() {
@@ -43,10 +41,10 @@ export class HomepageComponent implements OnInit {
     this.searchResults = data;
   }
 
-  public onResultSelected(e) {
+  public onResultSelected(heritage: Heritage) {
     // console.log(e.data);
-    this.leafletMapComponent.flyToHeritage(e.data);
-    this.selectedHeritage = e.data;
+    this.leafletMapComponent.flyToHeritage(heritage);
+    this.selectedHeritage = heritage;
   }
 
   public onSearchResultSidebarHide(e) {
@@ -61,15 +59,7 @@ export class HomepageComponent implements OnInit {
 
   public onDrawed(heritages: Heritage[]) {
     this.searchResults = heritages;
-    this.resultSidebarDisplay = true;
   }
 
-  public exportExcel() {
-    this.excelService.exportAsExcelFile(this.searchResults, 'result');
-  }
-
-  public printDirectly() {
-    this.excelService.printDirectly(this.searchResults);
-  }
 
 }
