@@ -1,4 +1,4 @@
-import { LatLng, divIcon, Marker, marker, latLng, geoJSON, GeoJSON, PathOptions } from 'leaflet';
+import { LatLng, divIcon, Marker, marker, latLng, geoJSON, GeoJSON, PathOptions, Control, Map, DomUtil } from 'leaflet';
 import { HERITAGE_TYPE } from '../config/heritage-type';
 import { Heritage } from '../models/heritage';
 import { GeoJsonObject } from '../../../node_modules/@types/geojson';
@@ -22,17 +22,16 @@ export class MyUntil {
 
     }
 
-    // public static createLegend(map: Map) {
-    //     const legend = new Control({ position: 'bottomleft' });
-    //     legend.onAdd = function (_map: Map) {
-    //         const div = DomUtil.create('div', 'info legend');
-    //         for (const config of heritageTypeConfig) {
-    //             div.innerHTML += '<img src="' + config.image_url + '"/> ' + config.name + '<br>';
-    //         }
-    //         return div;
-    //     };
-    //     legend.addTo(map);
-    // }
+    public static createLegend(map: Map) {
+        const legend = new Control({ position: 'bottomleft' });
+        legend.onAdd = function (_map: Map) {
+            const div = DomUtil.create('div', 'info legend');
+            div.innerHTML += `<div class="legend-div background-yellow"></div><span> ${HERITAGE_TYPE.DIA_CHAT}</span><br>`;
+            div.innerHTML += `<div class="legend-div background-white"></div><span> ${HERITAGE_TYPE.VAN_HOA}</span><br>`;
+            return div;
+        };
+        legend.addTo(map);
+    }
 
     public static isInsideCircle(markerLatLng: LatLng, center: LatLng, radius: number): boolean {
         return markerLatLng.distanceTo(center) <= radius;

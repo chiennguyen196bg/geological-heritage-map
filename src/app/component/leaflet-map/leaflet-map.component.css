@@ -10,9 +10,11 @@
     border-radius: 5px;
  }
 
- :host ::ng-deep .legend img {
-    max-width: 12px;
-    max-height: 12px;
+ :host ::ng-deep .legend .legend-div {
+    width: 12px;
+    height: 12px;
+    float: left;
+    margin-right: 0.5em;
 }
 
 :host ::ng-deep .div-icon {

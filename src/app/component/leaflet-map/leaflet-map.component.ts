@@ -29,8 +29,8 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   map: Map;
   data: Heritage[];
 
-  private noneMapLayer = tileLayer('', { maxZoom: 16, attribution: '...' });
-  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 16, minZoom: 11, attribution: '...', opacity: 0.3 });
+  private noneMapLayer = tileLayer('', { maxZoom: 16, attribution: '' });
+  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 16, minZoom: 11, attribution: '', opacity: 0.3 });
 
   // config
   leafletOptions = {
@@ -50,8 +50,8 @@ export class LeafletMapComponent implements OnInit, OnChanges {
     baseLayers: {
       // 'Open Street Map': tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
       // 'Open Cycle Map': tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...' })
-      'None Map': this.noneMapLayer,
-      'Custom Map': this.customMapLayer
+      'Không nền': this.noneMapLayer,
+      'Nền địa chất': this.customMapLayer
     },
     overlays: {
     }
@@ -144,7 +144,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
     // add editable layer to map and create event triggers
     map.addLayer(this.editableLayers);
-    // MyUntil.createLegend(map);
+    MyUntil.createLegend(map);
 
     map.on(Draw.Event.CREATED, (e: DrawEvents.Created) => {
       this.editableLayers.clearLayers();
