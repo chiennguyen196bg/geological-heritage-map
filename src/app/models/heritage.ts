@@ -1,3 +1,5 @@
+import { GeoJsonGeometryTypes } from '../../../node_modules/@types/geojson';
+
 export interface Heritage {
     TT: number;
     TenDiSan: string;
@@ -11,7 +13,7 @@ export interface Heritage {
     KhaNangTiepCanMuaMua: string;
     Link: string;
     geometry: {
-        type: string;
+        type: GeoJsonGeometryTypes;
         coordinates: [number, number]
     };
 }

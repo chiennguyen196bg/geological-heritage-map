@@ -1,42 +1,16 @@
-import { Icon, icon, Control, DomUtil, Map, LatLng, divIcon } from 'leaflet';
-import { heritageTypeConfig } from '../config/heritage-type';
+import { LatLng, divIcon, Marker, marker, latLng, geoJSON, GeoJSON, PathOptions } from 'leaflet';
+import { HERITAGE_TYPE } from '../config/heritage-type';
 import { Heritage } from '../models/heritage';
+import { GeoJsonObject } from '../../../node_modules/@types/geojson';
 
 export class MyUntil {
-
-    // private static getIconUrl(item: Heritage, type = 'default', _default = 'assets/marker-icon.png') {
-    //     for (const config of heritageTypeConfig) {
-    //         if (item.type === config.name) {
-    //             if (type === 'default') {
-    //                 return config.image_url || _default;
-    //             }
-    //             if (type === 'binding') {
-    //                 return config.binding_image_url || _default;
-    //             }
-    //             if (type === 'marked') {
-    //                 return config.marked_image_url || _default;
-    //             }
-    //         }
-    //     }
-    //     return _default;
-    // }
-
-    // public static createIcon(item: Heritage, type = 'default'): Icon {
-        // const iconUrl = this.getIconUrl(item, type);
-
-        // return icon({
-        //     iconUrl: iconUrl,
-        //     iconSize: [20, 20],
-        //     iconAnchor: [10, 10],
-        // });
-    // }
 
     public static createDivIcon(item: Heritage, type = 'default') {
         // const iconUrl = this.getIconUrl(item, type);
         let backgroundColor;
-        if (item.LoaiDiSan === 'Địa chất') {
+        if (item.LoaiDiSan === HERITAGE_TYPE.DIA_CHAT) {
             backgroundColor = 'background-yellow';
-        } else if (item.LoaiDiSan === 'Văn Hóa') {
+        } else if (item.LoaiDiSan === HERITAGE_TYPE.VAN_HOA) {
             backgroundColor = 'background-white';
         }
         return divIcon({
@@ -48,19 +22,53 @@ export class MyUntil {
 
     }
 
-    public static createLegend(map: Map) {
-        const legend = new Control({ position: 'bottomleft' });
-        legend.onAdd = function (_map: Map) {
-            const div = DomUtil.create('div', 'info legend');
-            for (const config of heritageTypeConfig) {
-                div.innerHTML += '<img src="' + config.image_url + '"/> ' + config.name + '<br>';
-            }
-            return div;
-        };
-        legend.addTo(map);
-    }
+    // public static createLegend(map: Map) {
+    //     const legend = new Control({ position: 'bottomleft' });
+    //     legend.onAdd = function (_map: Map) {
+    //         const div = DomUtil.create('div', 'info legend');
+    //         for (const config of heritageTypeConfig) {
+    //             div.innerHTML += '<img src="' + config.image_url + '"/> ' + config.name + '<br>';
+    //         }
+    //         return div;
+    //     };
+    //     legend.addTo(map);
+    // }
 
     public static isInsideCircle(markerLatLng: LatLng, center: LatLng, radius: number): boolean {
         return markerLatLng.distanceTo(center) <= radius;
     }
+
+    public static createMarker(item: Heritage, type = 'default'): Marker {
+        const coordinates = item.geometry.coordinates;
+        return marker(latLng(coordinates[0], coordinates[1]), {
+            icon: this.createDivIcon(item, type)
+        });
+    }
+
+    public static createGeoJsonLayer(item: Heritage): GeoJSON<any> {
+        return geoJSON(item.geometry as GeoJsonObject, {
+            style: function (): PathOptions {
+                return {
+                    fillOpacity: 0.8,
+                    fillColor: MyUntil.stringToColour(item.TenDiSan),
+                };
+            }
+        });
+    }
+
+    public static stringToColour(str: string) {
+        str = str ? str + 'ABC' : ' ';
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+          // tslint:disable-next-line:no-bitwise
+          hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        let colour = '#';
+        for (let i = 0; i < 3; i++) {
+          // tslint:disable-next-line:no-bitwise
+          const value = (hash >> (i * 8)) & 0xFF;
+          colour += ('00' + value.toString(16)).substr(-2);
+        }
+        return colour;
+      }
 }

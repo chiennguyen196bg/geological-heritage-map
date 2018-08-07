@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
-import { marker, tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle, geoJSON, PathOptions } from 'leaflet';
+import { tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle, geoJSON, Layer, Marker } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
 import { HttpClient } from '@angular/common/http';
 import { GeoJsonObject } from 'geojson';
 import { Heritage } from '../../models/heritage';
 import { HeritageService } from '../../service/heritage.service';
+import { isNgTemplate } from '../../../../node_modules/@angular/compiler';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -23,7 +24,8 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
   // variable
   editableLayers = new FeatureGroup();
-  markers: any[] = [];
+  markers: Marker[] = [];
+  layers: Layer[] = [];
   map: Map;
   data: Heritage[];
 
@@ -88,37 +90,44 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       // console.log(data);
       this.data = data;
       // console.log(this.data);
-      this.updateMarkers();
+      this.updateData();
     });
   }
 
-  private updateMarkers(): void {
-    console.log('Onchanges');
+  private updateData(): void {
     // console.log(this.data);
     if (this.data) {
-      this.markers = this.data.map(item => {
-        const coordinates = item.geometry.coordinates;
-        let type = 'default';
-        if (this.bindingPoints && this.bindingPoints.indexOf(item) > -1) {
-          type = 'binding';
-        } else if (this.markedPoints && this.markedPoints.indexOf(item) > -1) {
-          type = 'marked';
-        }
-        // console.log('type: ' + type);
-        return marker(latLng(coordinates[0], coordinates[1]), {
-          icon: MyUntil.createDivIcon(item, type)
-        }).on('click', () => {
-          console.log('click on marker: ' + item.TT);
-          this._ngZone.run(() => {
-            this.markerClicked.emit(item);
-            // this.flyToHeritage(item);
-          });
+      this.markers = this.data.filter(item => item.geometry.type === 'Point')
+        .map(item => {
+          const coordinates = item.geometry.coordinates;
+          let type = 'default';
+          if (this.bindingPoints && this.bindingPoints.indexOf(item) > -1) {
+            type = 'binding';
+          } else if (this.markedPoints && this.markedPoints.indexOf(item) > -1) {
+            type = 'marked';
+          }
+          // console.log('type: ' + type);
+          return this.addEventOnClick(MyUntil.createMarker(item, type), item);
         });
-      });
+      this.layers = this.data.filter(item => item.geometry.type !== 'Point')
+        .map(item => {
+          return this.addEventOnClick(MyUntil.createGeoJsonLayer(item), item);
+        });
     }
   }
+
+  private addEventOnClick<T extends Layer>(layer: T, item: Heritage): T {
+    return layer.on('click', () => {
+      console.log('click on : ' + item.TT);
+      this._ngZone.run(() => {
+        this.markerClicked.emit(item);
+        // this.flyToHeritage(item);
+      });
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    this.updateMarkers();
+    this.updateData();
   }
 
   public flyToHeritage(item: Heritage): void {
