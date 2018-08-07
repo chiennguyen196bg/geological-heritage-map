@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
-import { Heritage } from '../../class/heritage';
 import { marker, tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle, geoJSON, PathOptions } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
 import { HttpClient } from '@angular/common/http';
 import { GeoJsonObject } from 'geojson';
+import { Heritage } from '../../models/heritage';
+import { HeritageService } from '../../service/heritage.service';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -14,7 +15,7 @@ import { GeoJsonObject } from 'geojson';
 })
 export class LeafletMapComponent implements OnInit, OnChanges {
 
-  @Input() data: Heritage[];
+
   @Input() markedPoints: Heritage[] = [];
   @Input() bindingPoints: Heritage[] = [];
   @Output() markerClicked = new EventEmitter<Heritage>();
@@ -24,9 +25,10 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   editableLayers = new FeatureGroup();
   markers: any[] = [];
   map: Map;
+  data: Heritage[];
 
-  private openStreetMapLayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' });
-  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...', opacity: 0.3 });
+  private noneMapLayer = tileLayer('', { maxZoom: 16, attribution: '...' });
+  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 16, minZoom: 11, attribution: '...', opacity: 0.3 });
 
   // config
   leafletOptions = {
@@ -37,14 +39,16 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       this.customMapLayer
     ],
     zoom: 11,
-    center: latLng(12.4587489, 107.9188864)
+    center: latLng(12.4587489, 107.9188864),
+    maxZoom: 17,
+    minZoom: 11
   };
 
   leafletLayersControl = {
     baseLayers: {
       // 'Open Street Map': tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
       // 'Open Cycle Map': tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...' })
-      'Open Street Map': this.openStreetMapLayer,
+      'None Map': this.noneMapLayer,
       'Custom Map': this.customMapLayer
     },
     overlays: {
@@ -69,16 +73,26 @@ export class LeafletMapComponent implements OnInit, OnChanges {
     }
   };
 
+  markerClusterOptions = {
+    disableClusteringAtZoom: 12
+  };
+
   constructor(
     private _ngZone: NgZone,
-    private http: HttpClient
+    private http: HttpClient,
+    private heritageService: HeritageService
   ) { }
   // var Esri_WorldImagery = L.;
   ngOnInit() {
-
+    this.heritageService.getHeritages().subscribe(data => {
+      // console.log(data);
+      this.data = data;
+      // console.log(this.data);
+      this.updateMarkers();
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  private updateMarkers(): void {
     console.log('Onchanges');
     // console.log(this.data);
     if (this.data) {
@@ -94,7 +108,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         return marker(latLng(coordinates[0], coordinates[1]), {
           icon: MyUntil.createDivIcon(item, type)
         }).on('click', () => {
-          console.log('click on marker: ' + item.id);
+          console.log('click on marker: ' + item.TT);
           this._ngZone.run(() => {
             this.markerClicked.emit(item);
             // this.flyToHeritage(item);
@@ -103,6 +117,10 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       });
     }
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updateMarkers();
+  }
+
   public flyToHeritage(item: Heritage): void {
     if (!this.map) {
       return;
@@ -117,7 +135,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
     // add editable layer to map and create event triggers
     map.addLayer(this.editableLayers);
-    MyUntil.createLegend(map);
+    // MyUntil.createLegend(map);
 
     map.on(Draw.Event.CREATED, (e: DrawEvents.Created) => {
       this.editableLayers.clearLayers();

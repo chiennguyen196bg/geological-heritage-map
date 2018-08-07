@@ -17,8 +17,18 @@
 
 :host ::ng-deep .div-icon {
     /* height: 20px; */
-    overflow: auto;
-    width: 100px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+:host ::ng-deep .background-yellow {
+    /* height: 20px; */
+    background-color: yellow;
+}
+
+:host ::ng-deep .background-white {
+    /* height: 20px; */
+    background-color: white;
 }
 
 :host ::ng-deep .div-icon img {

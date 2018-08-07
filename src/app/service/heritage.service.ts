@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Heritage } from '../class/heritage';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Heritage } from '../models/heritage';
 
 @Injectable()
 export class HeritageService {
 
   private _cache: Heritage[];
-  private _url = '/assets/data/DiemDiSan_0.json';
+  private _url = '/assets/data/DiemDiSanGop_0.json';
 
   constructor(
     private http: HttpClient
@@ -19,52 +19,21 @@ export class HeritageService {
     if (this._cache) {
       return of(this._cache);
     } else {
-      return this.http.get(this._url).pipe(
-        map(res => {
-          this._cache = this.convertToModels(res['features']);
-          return this._cache;
-        })
+      return this.http.get<Heritage[]>(this._url).pipe(
+        map(data => {
+          return data.map(item => {
+            item.geometry.coordinates.reverse();
+            return item;
+          });
+        }),
+        tap(data => this._cache = data)
       );
     }
   }
 
-  private convertToModels(data: any[]): Heritage[] {
-    return data.map(item => {
-      // console.log(item);
-      const _ = new Heritage();
-      _.id = item.properties['ID'];
-      _.name = item.properties['Ten'];
-      _.type = item.properties['Kieu'];
-      _.label = item.properties['KyHieu'];
-      _.attachedFile = item.properties['attachedFile'];
-      _.commune = item.properties['Xa'];
-      _.district = item.properties['Huyen'];
-      _.geometry = item['geometry'];
-      _.geometry.coordinates.reverse();
-      return _;
-    });
-  }
-
-  public searchHeritages(name = '', districtName = '', communeName = ''): Observable<Heritage[]> {
-    name = name.trim().toLocaleLowerCase();
-    districtName = districtName.trim().toLocaleLowerCase();
-    communeName = communeName.trim().toLocaleLowerCase();
-    return this.getHeritages().pipe(
-      map(data => {
-        return data.filter((item: Heritage) => (item.name.toLocaleLowerCase().indexOf(name) > -1 || name === ''));
-      }),
-      map(data => {
-        return data.filter((item: Heritage) => (item.district.toLocaleLowerCase().indexOf(districtName) > -1 || districtName === ''));
-      }),
-      map(data => {
-        return data.filter((item: Heritage) => (item.commune.toLocaleLowerCase().indexOf(communeName) > -1 || communeName === ''));
-      }),
-    );
-  }
-
-  public suggest(query: string, feild: string): Observable<string[]> {
+  public suggest(query: string, feild: string, searchObjects: SearchObject[] = []): Observable<string[]> {
     query = query.trim().toLocaleLowerCase();
-    return this.getHeritages().pipe(
+    return this.search(searchObjects).pipe(
       map(data => {
         const set = new Set(data.map(item => item[feild]));
         return Array.from(set);
@@ -73,8 +42,8 @@ export class HeritageService {
     );
   }
 
-  public getDistinstValues(fieldName: string): Observable<string[]> {
-    return this.getHeritages().pipe(
+  public getDistinstValues(fieldName: string, searchObjects: SearchObject[]): Observable<string[]> {
+    return this.search(searchObjects).pipe(
       map(data => {
         const set = new Set(data.map(item => item[fieldName]));
         return Array.from(set);
@@ -82,9 +51,12 @@ export class HeritageService {
     );
   }
 
-  public search(...searchObjects: SearchObject[]): Observable<Heritage[]> {
+  public search(searchObjects: SearchObject[]): Observable<Heritage[]> {
+    // console.log('Search!');
     return this.getHeritages().pipe(
+      // tap(_ => console.log('hehe')),
       map(data => {
+        console.log(searchObjects);
         searchObjects.forEach(ele => {
           if (ele.type === 'single') {
             if (Array.isArray(ele.value)) {

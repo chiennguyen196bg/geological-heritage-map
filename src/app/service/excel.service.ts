@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { Heritage } from '../class/heritage';
+import { Heritage } from '../models/heritage';
 
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -11,7 +11,7 @@ export class ExcelService {
 
   public exportAsExcelFile(json: Heritage[], excelFileName: string): void {
     console.log(json);
-    const data = json.sort((a, b) => (a.id - b.id)).map((item => this.convertHeritage(item)));
+    const data = json.sort((a, b) => (a.TT - b.TT)).map((item => this.convertHeritage(item)));
     const fileName = excelFileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION;
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
@@ -20,19 +20,21 @@ export class ExcelService {
 
   private convertHeritage(heritage: Heritage): any {
     return {
-      'ID': heritage.id,
-      'Tên': heritage.name,
-      'Kiểu': heritage.type,
-      'Ký hiệu': heritage.label,
-      'Huyện': heritage.district,
-      'Xã': heritage.commune,
+      'TT': heritage.TT,
+      'Tên': heritage.TenDiSan,
+      'Kiểu': heritage.KieuDiSan,
+      // 'Ký hiệu': heritage.label,
+      'Huyện': heritage.Huyen,
+      'Xã': heritage.Xa,
       'Kinh độ': heritage.geometry.coordinates[1],
-      'Vĩ độ': heritage.geometry.coordinates[0]
+      'Vĩ độ': heritage.geometry.coordinates[0],
+      'Hiện Trạng Bảo Vệ': heritage.HienTrangB,
+      'Thông tin xếp hạng': heritage.ThongTinXe
     };
   }
 
   public printDirectly(json: Heritage[]) {
-    const data = json.sort((a, b) => (a.id - b.id)).map((item => this.convertHeritage(item)));
+    const data = json.sort((a, b) => (a.TT - b.TT)).map((item => this.convertHeritage(item)));
     let html = '<table>';
     html += '<tr>';
     const keys = Object.keys(data[0]);

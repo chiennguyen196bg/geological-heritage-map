@@ -1,42 +1,48 @@
 import { Icon, icon, Control, DomUtil, Map, LatLng, divIcon } from 'leaflet';
-import { Heritage } from '../class/heritage';
 import { heritageTypeConfig } from '../config/heritage-type';
+import { Heritage } from '../models/heritage';
 
 export class MyUntil {
 
-    private static getIconUrl(item: Heritage, type = 'default', _default = 'assets/marker-icon.png') {
-        for (const config of heritageTypeConfig) {
-            if (item.type === config.name) {
-                if (type === 'default') {
-                    return config.image_url || _default;
-                }
-                if (type === 'binding') {
-                    return config.binding_image_url || _default;
-                }
-                if (type === 'marked') {
-                    return config.marked_image_url || _default;
-                }
-            }
-        }
-        return _default;
-    }
+    // private static getIconUrl(item: Heritage, type = 'default', _default = 'assets/marker-icon.png') {
+    //     for (const config of heritageTypeConfig) {
+    //         if (item.type === config.name) {
+    //             if (type === 'default') {
+    //                 return config.image_url || _default;
+    //             }
+    //             if (type === 'binding') {
+    //                 return config.binding_image_url || _default;
+    //             }
+    //             if (type === 'marked') {
+    //                 return config.marked_image_url || _default;
+    //             }
+    //         }
+    //     }
+    //     return _default;
+    // }
 
-    public static createIcon(item: Heritage, type = 'default'): Icon {
-        const iconUrl = this.getIconUrl(item, type);
+    // public static createIcon(item: Heritage, type = 'default'): Icon {
+        // const iconUrl = this.getIconUrl(item, type);
 
-        return icon({
-            iconUrl: iconUrl,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-        });
-    }
+        // return icon({
+        //     iconUrl: iconUrl,
+        //     iconSize: [20, 20],
+        //     iconAnchor: [10, 10],
+        // });
+    // }
 
     public static createDivIcon(item: Heritage, type = 'default') {
-        const iconUrl = this.getIconUrl(item, type);
+        // const iconUrl = this.getIconUrl(item, type);
+        let backgroundColor;
+        if (item.LoaiDiSan === 'Địa chất') {
+            backgroundColor = 'background-yellow';
+        } else if (item.LoaiDiSan === 'Văn Hóa') {
+            backgroundColor = 'background-white';
+        }
         return divIcon({
-            html: '<img src="' + iconUrl + '"/> ' + '<span>' + item.label + '</span>',
-            className: 'div-icon',
-            iconSize: null,
+            html: `<span>${item.TT}</span>`,
+            className: 'div-icon ' + backgroundColor,
+            iconSize: [20, 20],
             iconAnchor: [10, 10],
         });
 

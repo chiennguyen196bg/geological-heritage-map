@@ -1,21 +1,30 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { HeritageService, SearchObject } from '../../service/heritage.service';
-import { Heritage } from '../../class/heritage';
 import { Observable } from 'rxjs/Observable';
 import { SelectItem } from 'primeng/api';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Heritage } from '../../models/heritage';
 
 @Component({
   selector: 'app-search-sidebar',
   templateUrl: './search-sidebar.component.html',
   styleUrls: ['./search-sidebar.component.css']
 })
-export class SearchSidebarComponent implements OnInit {
-  name = '';
-  selectedDistricts = [];
-  selectedCommunes = [];
-  nameSuggestion: string[];
-  types = [
+export class SearchSidebarComponent {
+
+  loaiDiSan;
+  TenDiSan = '';
+  kieuDiSanVanHoa = '';
+  kieuDiSanDiaChat = [];
+  xa = [];
+  huyen = [];
+
+  loaiDiSanOptions = [
+    { label: 'Địa chất', value: 'Địa chất' },
+    { label: 'Văn Hóa', value: 'Văn Hóa' }
+  ];
+
+  kieuDiSanDiaChatOption = [
     { label: 'A_Cổ sinh', value: 'A' },
     { label: 'B_Địa mạo', value: 'B' },
     { label: 'C_Cổ môi trường', value: 'C' },
@@ -23,49 +32,78 @@ export class SearchSidebarComponent implements OnInit {
     { label: 'E_Địa tầng', value: 'E' },
     { label: 'F_Khoáng vật, khoáng sản', value: 'F' },
   ];
-  selectedTypes = [];
+
+
+
+  kieuDiSanVanHoaOption = [];
+
+
+
+  TenDiSanSuggestion = [];
   @Output() searched = new EventEmitter<Heritage[]>();
 
   constructor(
     private heritageService: HeritageService
   ) { }
 
-  ngOnInit() {
+  private getSearchObjects(): SearchObject[] {
+    const searchObjects: SearchObject[] = [];
+    if (!this.loaiDiSan) {
+      return [];
+    }
+    searchObjects.push({ field: 'LoaiDiSan', value: this.loaiDiSan, type: 'single' });
+    if (this.TenDiSan !== '') {
+      searchObjects.push({ field: 'TenDiSan', value: this.TenDiSan, type: 'single' });
+    }
+    if (this.huyen.length > 0) {
+      searchObjects.push({ field: 'Huyen', value: this.huyen, type: 'or' });
+    }
+    if (this.xa.length > 0) {
+      searchObjects.push({ field: 'Xa', value: this.xa, type: 'or' });
+    }
+
+    if (this.kieuDiSanDiaChat.length > 0 && this.loaiDiSan === 'Địa chất') {
+      searchObjects.push({ field: 'KieuDiSan', value: this.kieuDiSanDiaChat, type: 'and' });
+    }
+
+    if (this.loaiDiSan === 'Văn Hóa' && this.kieuDiSanVanHoa !== '') {
+      searchObjects.push({ field: 'KieuDiSan', value: this.kieuDiSanVanHoa, type: 'single' });
+    }
+    return searchObjects;
   }
 
   search() {
-    const searchObjects: SearchObject[] = [];
-    if (this.name !== '') {
-      searchObjects.push({ field: 'name', value: this.name, type: 'single' });
-    }
-    if (this.selectedDistricts.length > 0) {
-      searchObjects.push({ field: 'district', value: this.selectedDistricts, type: 'or' });
-    }
-    if (this.selectedCommunes.length > 0) {
-      searchObjects.push({ field: 'commune', value: this.selectedCommunes, type: 'or' });
-    }
-    if (this.selectedTypes.length > 0) {
-      searchObjects.push({ field: 'label', value: this.selectedTypes, type: 'and' });
-    }
-    this.heritageService.search(...searchObjects).subscribe(data => {
+    this.heritageService.search(this.getSearchObjects()).subscribe(data => {
       this.searched.emit(data);
     });
   }
 
-  suggestName(event) {
-    this.heritageService.suggest(event.query, 'name').subscribe(data => this.nameSuggestion = data);
+  suggestTenDiSan(event) {
+    this.heritageService.suggest(event.query, 'TenDiSan').subscribe(data => this.TenDiSanSuggestion = data);
   }
-  // suggestDistrictName(event) {
-  //   this.heritageService.suggest(event.query, 'district').subscribe(data => this.districtNameResults = data);
-  // }
-  // suggestCommuneName(event) {
-  //   this.heritageService.suggest(event.query, 'commune').subscribe(data => this.communeNameResults = data);
-  // }
 
   getDistinstValues(fieldName: string): Observable<SelectItem[]> {
-    return this.heritageService.getDistinstValues(fieldName).pipe(
+    // console.log('Here');
+    return this.heritageService.getDistinstValues(fieldName, [
+      { field: 'LoaiDiSan', value: this.loaiDiSan, type: 'single' }]).pipe(
+      map(data => {
+        if (!data) {
+          return [];
+        } else {
+          return data;
+        }
+      }),
       map(data => data.map(item => <SelectItem>{ label: item, value: item }))
     );
+  }
+
+  reset() {
+    this.loaiDiSan = false;
+    this.TenDiSan = '';
+    this.kieuDiSanVanHoa = '';
+    this.kieuDiSanDiaChat = [];
+    this.xa = [];
+    this.huyen = [];
   }
 
 }
