@@ -44,3 +44,7 @@ footer {
 :ng-deep .result-info button {
     margin-left: 1em;
 }
+
+#content {
+    height: 100%;
+}
