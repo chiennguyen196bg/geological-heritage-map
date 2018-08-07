@@ -21,7 +21,6 @@ export class HomepageComponent implements OnInit {
   ];
   searchSidebarDisplay: any;
   resultSidebarDisplay: any;
-  data: Heritage[] = [];
   selectedHeritage: Heritage;
   searchResults: Heritage[];
 
@@ -31,11 +30,6 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.heritageService.getHeritages().subscribe(data => {
-      console.log(data);
-      this.data = data;
-      // console.log(this.data);
-    });
   }
 
   public onMarkerClicked(item: Heritage) {

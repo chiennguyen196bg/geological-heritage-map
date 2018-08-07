@@ -6,6 +6,7 @@ import { layerConfig } from '../../config/layer-config';
 import { HttpClient } from '@angular/common/http';
 import { GeoJsonObject } from 'geojson';
 import { Heritage } from '../../models/heritage';
+import { HeritageService } from '../../service/heritage.service';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -14,7 +15,7 @@ import { Heritage } from '../../models/heritage';
 })
 export class LeafletMapComponent implements OnInit, OnChanges {
 
-  @Input() data: Heritage[];
+
   @Input() markedPoints: Heritage[] = [];
   @Input() bindingPoints: Heritage[] = [];
   @Output() markerClicked = new EventEmitter<Heritage>();
@@ -24,6 +25,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   editableLayers = new FeatureGroup();
   markers: any[] = [];
   map: Map;
+  data: Heritage[];
 
   private noneMapLayer = tileLayer('', { maxZoom: 16, attribution: '...' });
   private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 16, minZoom: 11, attribution: '...', opacity: 0.3 });
@@ -77,14 +79,20 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
   constructor(
     private _ngZone: NgZone,
-    private http: HttpClient
+    private http: HttpClient,
+    private heritageService: HeritageService
   ) { }
   // var Esri_WorldImagery = L.;
   ngOnInit() {
-
+    this.heritageService.getHeritages().subscribe(data => {
+      // console.log(data);
+      this.data = data;
+      // console.log(this.data);
+      this.updateMarkers();
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  private updateMarkers(): void {
     console.log('Onchanges');
     // console.log(this.data);
     if (this.data) {
@@ -109,6 +117,10 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       });
     }
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updateMarkers();
+  }
+
   public flyToHeritage(item: Heritage): void {
     if (!this.map) {
       return;
