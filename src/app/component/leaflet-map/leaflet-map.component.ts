@@ -135,7 +135,9 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       return;
     }
     const coordinates = item.geometry.coordinates;
-    this.map.flyTo(latLng(coordinates[0], coordinates[1]), 13);
+    if (item.geometry.type === 'Point') {
+      this.map.flyTo(latLng(coordinates[0], coordinates[1]), 13);
+    }
   }
 
   onMapReady(map: Map) {

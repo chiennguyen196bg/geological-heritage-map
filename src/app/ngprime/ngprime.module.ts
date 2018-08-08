@@ -13,6 +13,8 @@ import { DataTableModule } from 'primeng/datatable';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
 
 const NG_MODULE = [
   MenubarModule,
@@ -26,7 +28,9 @@ const NG_MODULE = [
   DataTableModule,
   AutoCompleteModule,
   MultiSelectModule,
-  DropdownModule
+  DropdownModule,
+  CheckboxModule,
+  DialogModule
 ];
 @NgModule({
   imports: [...NG_MODULE],

@@ -56,7 +56,7 @@ export class HeritageService {
     return this.getHeritages().pipe(
       // tap(_ => console.log('hehe')),
       map(data => {
-        console.log(searchObjects);
+        // console.log(searchObjects);
         searchObjects.forEach(ele => {
           if (ele.type === 'single') {
             if (Array.isArray(ele.value)) {

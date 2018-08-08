@@ -5,3 +5,11 @@
 :host ::ng-deep .input-field,:host ::ng-deep .input-field input {
     min-width: 100%;
 }
+
+.input-form {
+    margin-bottom: 2em;
+}
+
+.input-form > label {
+    font-weight: bold;
+}

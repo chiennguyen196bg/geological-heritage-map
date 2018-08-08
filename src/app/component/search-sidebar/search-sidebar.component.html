@@ -1,22 +1,55 @@
 <h3>Tìm kiếm</h3>
-<div>
-  <h4 class="first">Kiểu di sản:</h4>
-  <p-dropdown [options]="loaiDiSanOptions" [(ngModel)]="loaiDiSan" placeholder="Chọn loại di sản"></p-dropdown>
+<div class="ui-g">
+  <div class="input-form">
+    <label>Kiểu di sản:</label>
+    <div class="ui-g-12" *ngFor="let type of HeritageTypes">
+      <p-checkbox name="loaiDiSan" value="{{type}}" label="{{type}}" [(ngModel)]="loaiDiSanList"></p-checkbox>
+    </div>
+  </div>
 </div>
-<div *ngIf="loaiDiSan">
-  <h4 class="first">Tên di sản:</h4>
-  <!-- <input id="input" type="text" size="30" pInputText [(ngModel)]="name"> -->
-  <p-autoComplete [(ngModel)]="TenDiSan" [suggestions]="TenDiSanSuggestion" (completeMethod)="suggestTenDiSan($event)" styleClass="input-field"></p-autoComplete>
-  <h4 class="first">Kiểu di sản:</h4>
-  <p-multiSelect *ngIf="loaiDiSan == 'Địa chất'" [options]="kieuDiSanDiaChatOption" [(ngModel)]="kieuDiSanDiaChat" [panelStyle]="{minWidth:'100%'}" [defaultLabel]="'Chọn'" styleClass="input-field"></p-multiSelect>
-  <p-dropdown *ngIf="loaiDiSan == 'Văn Hóa'" [options]="getDistinstValues('KieuDiSan') | async" [(ngModel)]="kieuDiSanVanHoa" placeholder="Chọn"></p-dropdown>
-  <h4 class="first">Tên huyện:</h4>
-  <!-- <input id="input" type="text" size="30" pInputText [(ngModel)]="districtName"> -->
-  <!-- <p-autoComplete [(ngModel)]="districtName" [suggestions]="districtNameResults" (completeMethod)="suggestDistrictName($event)"></p-autoComplete> -->
-  <p-multiSelect [options]="getDistinstValues('Huyen') | async" [(ngModel)]="huyen" [panelStyle]="{minWidth:'100%'}" [defaultLabel]="'Chọn'" styleClass="input-field"></p-multiSelect>
-  <h4 class="first">Tên xã:</h4>
-  <!-- <input id="input" type="text" size="30" pInputText [(ngModel)]="communeName"> -->
-  <p-multiSelect [options]="getDistinstValues('Xa') | async" [(ngModel)]="xa" [panelStyle]="{minWidth:'100%'}" [defaultLabel]="'Chọn'" styleClass="input-field"></p-multiSelect>
-  <button style="margin-top: 1em" pButton class="ui-button-success" label="Tìm kiếm" icon="fa-search" (click)="search()"></button>
-  <button style="margin-top: 1em" pButton class="ui-button-warning" label="Reset" icon="fa-undo" (click)="reset()"></button>
+<div *ngIf="loaiDiSanList.length > 0">
+
+  <div class="input-form">
+    <label>Tên di sản:</label>
+    <p-autoComplete [(ngModel)]="TenDiSan" [suggestions]="TenDiSanSuggestion" (completeMethod)="suggestTenDiSan($event)" styleClass="input-field"></p-autoComplete>
+
+  </div>
+
+  <div class="input-form" *ngIf="loaiDiSanList.indexOf(HERITAGE_TYPE.DIA_CHAT) > -1">
+    <label>Kiểu di sản địa chất:</label>
+    <p-multiSelect [options]="kieuDiSanDiaChatOption" [(ngModel)]="kieuDiSanDiaChat" [panelStyle]="{minWidth:'100%'}" [defaultLabel]="'Chọn'"
+      styleClass="input-field"></p-multiSelect>
+
+  </div>
+  <div class="input-form" *ngIf="loaiDiSanList.indexOf(HERITAGE_TYPE.VAN_HOA) > -1">
+    <label>Kiểu di sản văn hóa:</label>
+    <p-dropdown [options]="getDistinstValues('KieuDiSan', HERITAGE_TYPE.VAN_HOA) | async" [(ngModel)]="kieuDiSanVanHoa" placeholder="Chọn"
+      styleClass="input-field"></p-dropdown>
+
+  </div>
+  <div class="input-form" *ngIf="loaiDiSanList.indexOf(HERITAGE_TYPE.SINH_HOC) > -1">
+    <label>Kiểu di sản đa dạng sinh học:</label>
+    <p-dropdown [options]="getDistinstValues('KieuDiSan', HERITAGE_TYPE.SINH_HOC) | async" [(ngModel)]="kieuDiSanSinhHoc" placeholder="Chọn"
+      styleClass="input-field"></p-dropdown>
+
+  </div>
+
+  <div class="input-form">
+    <label>Tên huyện:</label>
+    <p-multiSelect [options]="getDistinstValues('Huyen') | async" [(ngModel)]="huyen" [style]="{width :'100%'}" [defaultLabel]="'Chọn'"
+      styleClass="input-field"></p-multiSelect>
+    <!-- </label> -->
+  </div>
+
+
+  <div class="input-form">
+    <label>Tên xã:</label>
+    <p-multiSelect [options]="getDistinstValuesForXa() | async" [(ngModel)]="xa" [style]="{width :'100%'}" [defaultLabel]="'Chọn'"
+      styleClass="input-field"></p-multiSelect>
+  </div>
+
+  <p-footer>
+    <button style="margin-top: 1em" pButton class="ui-button-success" label="Tìm kiếm" icon="fa-search" (click)="search()"></button>
+    <button style="margin-top: 1em" pButton class="ui-button-warning" label="Reset" icon="fa-undo" (click)="reset()"></button>
+  </p-footer>
 </div>

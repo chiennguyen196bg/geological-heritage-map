@@ -4,7 +4,7 @@
   </p-menubar>
 </header>
 <div id="search-sidebar">
-  <p-sidebar [(visible)]="searchSidebarDisplay" styleClass="ui-sidebar-sm" position="right" [baseZIndex]="10000">
+  <p-sidebar [style]="{'overflow':'auto'}" [(visible)]="searchSidebarDisplay" styleClass="ui-sidebar-lg" position="right" [baseZIndex]="10000">
     <app-search-sidebar (searched)="onSearched($event); searchSidebarDisplay = false;"></app-search-sidebar>
   </p-sidebar>
 </div>
