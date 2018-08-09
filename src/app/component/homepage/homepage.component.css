@@ -12,11 +12,14 @@
     border-radius: 0px;
 }
 
-.my-panel-header, .ui-panel-titlebar {
+.my-panel-header {
     border: 0px;
     /* font-size: 17px; */
-    text-align: center;
+    /* text-align: center; */
     background: #fff;
+    background: aliceblue;
+    box-shadow: 2px 2px 10px darkgrey;
+    border-radius: 0px;
 }
 
 .ui-panel-title {

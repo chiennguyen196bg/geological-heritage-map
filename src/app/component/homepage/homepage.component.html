@@ -42,7 +42,7 @@
           <br>
         </div>
         <div *ngIf="selectedHeritage" style="margin-top: 1em">
-          <button pButton label="Reset" class="ui-button-warning" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
+          <button pButton label="Close" class="ui-button-warning" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
           <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()" *ngIf="selectedHeritage.Link"></button>
         </div>
       </p-panel>

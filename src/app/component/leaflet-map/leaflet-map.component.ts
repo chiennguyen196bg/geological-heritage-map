@@ -181,7 +181,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       };
     }
     this._ngZone.run(() => {
-      this.drawed.emit(this.data.filter(filterFunc));
+      this.drawed.emit(this.data.filter(item => item.geometry.type === 'Point').filter(filterFunc));
     });
   }
 
