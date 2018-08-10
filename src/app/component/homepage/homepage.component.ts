@@ -20,6 +20,7 @@ export class HomepageComponent implements OnInit {
     { label: 'CSDL Di sản tỉnh DakNong' }
   ];
   searchSidebarDisplay: any;
+  resultSidebarDisplay: any;
   selectedHeritage: Heritage;
   searchResults: Heritage[];
 

@@ -1,21 +1,21 @@
-<div class="result-div">
-  <h3>Kết quả tìm kiếm</h3>
-  <div class="result-info">
-    <span>Có {{searchResults?.length}} kết quả</span>
-    <button style="margin-left: 1em" pButton class="ui-button-success" label="Export excel" icon="fa-file-excel-o" (click)="exportExcel()"></button>
-    <button style="margin-left: 1em" pButton class="ui-button-success" label="Print" icon="fa-print" (click)="printDirectly()"></button>
-  </div>
-
-  <div style="overflow: auto; height: 100%;">
-    <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="5" [paginator]="true">
-      <p-column field="TT" header="TT"></p-column>
-      <p-column field="TenDiSan" header="Tên"></p-column>
-      <p-column field="LoaiDiSan" header="Loại"></p-column>
-      <p-column field="KieuDiSan" header="Kiểu"></p-column>
-      <p-column field="HienTrangB" header="Hiện Trạng Bảo Vệ"></p-column>
-      <p-column field="Xa" header="Xã"></p-column>
-      <p-column field="Huyen" header="Huyện"></p-column>
-      <p-column field="ThongTinXe" header="Thông tin xếp hạng"></p-column>
-    </p-dataTable>
-  </div>
+<!-- <div class="result-div"> -->
+<h3>Kết quả tìm kiếm</h3>
+<div class="result-info">
+  <span>Có {{searchResults?.length}} kết quả</span>
+  <button style="margin-left: 1em" pButton class="ui-button-success" label="Export excel" icon="fa-file-excel-o" (click)="exportExcel()"></button>
+  <button style="margin-left: 1em" pButton class="ui-button-success" label="Print" icon="fa-print" (click)="printDirectly()"></button>
 </div>
+
+<div style="overflow: auto; height: 100%;">
+  <p-dataTable [value]="searchResults" selectionMode="single" (onRowSelect)="onResultSelected($event)" [rows]="4" [paginator]="true">
+    <p-column field="TT" header="TT"></p-column>
+    <p-column field="TenDiSan" header="Tên"></p-column>
+    <p-column field="LoaiDiSan" header="Loại"></p-column>
+    <p-column field="KieuDiSan" header="Kiểu"></p-column>
+    <p-column field="HienTrangB" header="Hiện Trạng Bảo Vệ"></p-column>
+    <p-column field="Xa" header="Xã"></p-column>
+    <p-column field="Huyen" header="Huyện"></p-column>
+    <p-column field="ThongTinXe" header="Thông tin xếp hạng"></p-column>
+  </p-dataTable>
+</div>
+<!-- </div> -->

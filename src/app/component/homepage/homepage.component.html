@@ -4,18 +4,21 @@
   </p-menubar>
 </header>
 <div id="search-sidebar">
-  <p-sidebar [style]="{'overflow':'auto'}" [(visible)]="searchSidebarDisplay" styleClass="ui-sidebar-lg" position="right" [baseZIndex]="10000">
-    <app-search-sidebar (searched)="onSearched($event); searchSidebarDisplay = false;"></app-search-sidebar>
+  <p-sidebar [(visible)]="searchSidebarDisplay" styleClass="ui-sidebar-sm" position="right" [baseZIndex]="10000">
+    <app-search-sidebar (searched)="onSearched($event); searchSidebarDisplay = false; resultSidebarDisplay = true"></app-search-sidebar>
+  </p-sidebar>
+</div>
+<div id="result-sidebar" *ngIf="resultSidebarDisplay">
+  <p-sidebar [(visible)]="resultSidebarDisplay" position="bottom" [baseZIndex]="10000" (onHide)="onSearchResultSidebarHide($event)"
+    class="result-sidebar">
+    <app-search-result [searchResults]="searchResults" (resultSelected)="onResultSelected($event); resultSidebarDisplay = fasle"></app-search-result>
   </p-sidebar>
 </div>
 
 <section id="content">
   <div class="ui-g ui-md">
     <div class="ui-g-12 ui-md-9" style="padding: 0px;">
-      <app-leaflet-map 
-        [markedPoints]='searchResults' 
-        [bindingPoints]="[selectedHeritage]" 
-        (markerClicked)="onMarkerClicked($event)"
+      <app-leaflet-map [markedPoints]='searchResults' [bindingPoints]="[selectedHeritage]" (markerClicked)="onMarkerClicked($event)"
         (drawed)="onDrawed($event)">
       </app-leaflet-map>
     </div>
@@ -49,9 +52,9 @@
     </div>
   </div>
 </section>
-<section id="search-result" *ngIf="searchResults">
-  <app-search-result [searchResults]="searchResults" (resultSelected)="onResultSelected($event)"></app-search-result>
-</section>
+<!-- <section id="search-result" *ngIf="searchResults">
+  
+</section> -->
 <!-- <footer>
   <div class="alert alert-warning">
     Bản quyền thuộc về <strong>BTTNVN.</strong>
