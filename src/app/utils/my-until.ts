@@ -48,7 +48,7 @@ export class MyUntil {
         return geoJSON(item.geometry as GeoJsonObject, {
             style: function (): PathOptions {
                 return {
-                    fillOpacity: 0.8,
+                    fillOpacity: 0.4,
                     fillColor: MyUntil.stringToColour(item.TenDiSan),
                 };
             }

@@ -54,6 +54,7 @@ export class HomepageComponent implements OnInit {
   }
 
   public onDrawed(heritages: Heritage[]) {
+    this.resultSidebarDisplay = true;
     this.searchResults = heritages;
   }
 
