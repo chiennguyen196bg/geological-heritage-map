@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
 // import * as L from 'leaflet';
-import { tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents, Circle, Polygon, Rectangle, geoJSON, Layer, Marker } from 'leaflet';
+import {
+  tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents,
+  Circle, Polygon, Rectangle, geoJSON, Layer, Marker, LatLngBounds
+} from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
 import { HttpClient } from '@angular/common/http';
@@ -143,6 +146,10 @@ export class LeafletMapComponent implements OnInit, OnChanges {
   onMapReady(map: Map) {
     console.log('map ready');
     this.map = map;
+
+    this.map.setMaxBounds(new LatLngBounds(
+      latLng(12.780967, 107.4663892), latLng(11.7866852, 108.0986811)
+    ));
 
     // add editable layer to map and create event triggers
     map.addLayer(this.editableLayers);
