@@ -47,6 +47,27 @@
   display: inline-block;
 }
 
-:host ::ng-deep .ui-card-body, :host ::ng-deep .ui-card-content {
-    height: 100%;
+:host ::ng-deep .ui-card-body,
+:host ::ng-deep .ui-card-content {
+  height: 100%;
+}
+
+p-footer {
+  text-align: center;
+}
+
+p-footer div {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 0px;
+  background: aliceblue;
+  border: 0px;
+  box-shadow: 2px 2px 10px darkgrey;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+p-footer div label:hover {
+  cursor: pointer;
 }

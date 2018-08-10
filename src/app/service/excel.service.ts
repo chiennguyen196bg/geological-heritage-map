@@ -51,6 +51,17 @@ export class ExcelService {
       html += '</tr>';
     });
 
+    html += `
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      table, th, td {
+          border: 1px solid black;
+      }
+    </style>
+    `;
+
     // console.log(html);
     const newWin = window.open();
     newWin.document.write(html);

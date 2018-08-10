@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 // import * as L from 'leaflet';
 import {
   tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents,
-  Circle, Polygon, Rectangle, geoJSON, Layer, Marker, LatLngBounds
+  Circle, Polygon, Rectangle, geoJSON, Layer, Marker, LatLngBounds, layerGroup
 } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
@@ -11,6 +11,7 @@ import { GeoJsonObject } from 'geojson';
 import { Heritage } from '../../models/heritage';
 import { HeritageService } from '../../service/heritage.service';
 import { isNgTemplate } from '../../../../node_modules/@angular/compiler';
+import { HERITAGE_TYPE } from '../../config/heritage-type';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -19,15 +20,22 @@ import { isNgTemplate } from '../../../../node_modules/@angular/compiler';
 })
 export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked {
 
-  @Input() markedPoints: Heritage[] = [];
-  @Input() bindingPoints: Heritage[] = [];
   @Output() markerClicked = new EventEmitter<Heritage>();
   @Output() drawed = new EventEmitter<Heritage[]>();
 
   // variable
   editableLayers = new FeatureGroup();
   markers: Marker[] = [];
-  layers: Layer[] = [];
+
+  geologicalHeritageMarkers: Marker[] = [];
+  displayGeologicalHeritageMarkers = true;
+
+  culturalHeritageMarkers: Marker[] = [];
+  displayCulturalHeritageMarkers = true;
+
+  biologicalLayers: Layer[] = [];
+  displayBiologicalLayers = true;
+
   map: Map;
   data: Heritage[];
 
@@ -60,7 +68,7 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
   };
 
   drawOptions = {
-    position: 'topright',
+    position: 'bottomleft',
     draw: {
       marker: false,
       polyline: false,
@@ -99,23 +107,34 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
   private updateData(): void {
     // console.log(this.data);
     if (this.data) {
-      this.markers = this.data.filter(item => item.geometry.type === 'Point')
+      this.geologicalHeritageMarkers = this.data.filter(item => item.LoaiDiSan === HERITAGE_TYPE.DIA_CHAT)
         .map(item => {
-          const coordinates = item.geometry.coordinates;
-          let type = 'default';
-          if (this.bindingPoints && this.bindingPoints.indexOf(item) > -1) {
-            type = 'binding';
-          } else if (this.markedPoints && this.markedPoints.indexOf(item) > -1) {
-            type = 'marked';
-          }
-          // console.log('type: ' + type);
-          return this.addEventOnClick(MyUntil.createMarker(item, type), item);
+          return this.addEventOnClick(MyUntil.createMarker(item), item);
         });
-      this.layers = this.data.filter(item => item.geometry.type !== 'Point')
+
+      this.culturalHeritageMarkers = this.data.filter(item => item.LoaiDiSan === HERITAGE_TYPE.VAN_HOA)
+        .map(item => {
+          return this.addEventOnClick(MyUntil.createMarker(item), item);
+        });
+
+      this.biologicalLayers = this.data.filter(item => item.LoaiDiSan === HERITAGE_TYPE.SINH_HOC)
         .map(item => {
           return this.addEventOnClick(MyUntil.createGeoJsonLayer(item), item);
         });
     }
+
+    this.changeDisplayLayer();
+  }
+
+  changeDisplayLayer() {
+    let _markers: Marker[] = [];
+    if (this.displayGeologicalHeritageMarkers) {
+      _markers = _markers.concat(this.geologicalHeritageMarkers);
+    }
+    if (this.displayCulturalHeritageMarkers) {
+      _markers = _markers.concat(this.culturalHeritageMarkers);
+    }
+    this.markers = _markers;
   }
 
   private addEventOnClick<T extends Layer>(layer: T, item: Heritage): T {
@@ -170,8 +189,6 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
         });
       });
     });
-
-
   }
 
   private emitInsideHeritages(layer) {
