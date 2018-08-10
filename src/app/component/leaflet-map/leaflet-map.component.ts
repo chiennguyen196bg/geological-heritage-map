@@ -146,7 +146,7 @@ export class LeafletMapComponent implements OnInit, OnChanges {
 
     // add editable layer to map and create event triggers
     map.addLayer(this.editableLayers);
-    MyUntil.createLegend(map);
+    // MyUntil.createLegend(map);
 
     map.on(Draw.Event.CREATED, (e: DrawEvents.Created) => {
       this.editableLayers.clearLayers();
