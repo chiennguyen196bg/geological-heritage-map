@@ -1,4 +1,4 @@
-import { LatLng, divIcon, Marker, marker, latLng, geoJSON, GeoJSON, PathOptions, Control, Map, DomUtil } from 'leaflet';
+import { LatLng, divIcon, Marker, marker, latLng, geoJSON, GeoJSON, PathOptions, Control, Map, DomUtil, LatLngTuple } from 'leaflet';
 import { HERITAGE_TYPE } from '../config/heritage-type';
 import { Heritage } from '../models/heritage';
 import { GeoJsonObject } from '../../../node_modules/@types/geojson';
@@ -39,7 +39,7 @@ export class MyUntil {
 
     public static createMarker(item: Heritage, type = 'default'): Marker {
         const coordinates = item.geometry.coordinates;
-        return marker(latLng(coordinates[0], coordinates[1]), {
+        return marker((coordinates as LatLngTuple), {
             icon: this.createDivIcon(item, type)
         });
     }

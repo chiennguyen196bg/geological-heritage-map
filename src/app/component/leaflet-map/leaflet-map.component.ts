@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 // import * as L from 'leaflet';
 import {
   tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents,
-  Circle, Polygon, Rectangle, geoJSON, Layer, Marker, LatLngBounds, layerGroup
+  Circle, Polygon, Rectangle, geoJSON, Layer, Marker, LatLngBounds, layerGroup, LatLngTuple
 } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
@@ -157,7 +157,24 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
     }
     const coordinates = item.geometry.coordinates;
     if (item.geometry.type === 'Point') {
-      this.map.flyTo(latLng(coordinates[0], coordinates[1]), 13);
+      this.map.flyTo(latLng(item.geometry.coordinates as LatLngTuple), 13);
+    } else {
+      // this.map.fitBounds(item.geometry.coordinates as LatLngTuple[]);
+    }
+  }
+
+  public flyToHeritages(items: Heritage[]): void {
+    if (!this.map) {
+      return;
+    }
+    const coordinates: LatLngTuple[] = [];
+    for (const item of items) {
+      if (item.geometry.type === 'Point') {
+        coordinates.push(item.geometry.coordinates as LatLngTuple);
+      }
+    }
+    if (coordinates.length > 0) {
+      this.map.flyToBounds(coordinates);
     }
   }
 
@@ -197,12 +214,12 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
     if (layer instanceof Polygon || layer instanceof Rectangle) {
       filterFunc = (heritage: Heritage): boolean => {
         const coordinates = heritage.geometry.coordinates;
-        return layer.getBounds().contains(latLng(coordinates[0], coordinates[1]));
+        return layer.getBounds().contains(coordinates);
       };
     } else if (layer instanceof Circle) {
       filterFunc = (heritage: Heritage): boolean => {
         const coordinates = heritage.geometry.coordinates;
-        return MyUntil.isInsideCircle(latLng(coordinates[0], coordinates[1]), layer.getLatLng(), layer.getRadius());
+        return MyUntil.isInsideCircle(latLng(coordinates as LatLngTuple), layer.getLatLng(), layer.getRadius());
       };
     }
     this._ngZone.run(() => {

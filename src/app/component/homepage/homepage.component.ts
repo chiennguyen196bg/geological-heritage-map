@@ -40,6 +40,7 @@ export class HomepageComponent implements OnInit {
   public onSearched(data: Heritage[]) {
     // console.log(data);
     this.searchResults = data;
+    this.leafletMapComponent.flyToHeritages(data);
   }
 
   public onResultSelected(heritage: Heritage) {

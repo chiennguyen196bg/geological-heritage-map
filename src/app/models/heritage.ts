@@ -1,4 +1,5 @@
 import { GeoJsonGeometryTypes } from '../../../node_modules/@types/geojson';
+import { LatLngTuple } from '../../../node_modules/@types/leaflet';
 
 export interface Heritage {
     TT: number;
@@ -14,6 +15,6 @@ export interface Heritage {
     Link: string;
     geometry: {
         type: GeoJsonGeometryTypes;
-        coordinates: [number, number]
+        coordinates: LatLngTuple | LatLngTuple[]
     };
 }
