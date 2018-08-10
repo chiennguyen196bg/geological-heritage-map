@@ -48,3 +48,11 @@ footer {
     margin-left: 1em;
 }
 
+#content {
+    height: 86%;
+}
+
+#content > div,  #content > div > div, #content app-leaflet-map{
+    height: 100%;
+}
+

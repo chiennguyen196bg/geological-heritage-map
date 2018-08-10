@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, NgZone, AfterViewChecked } from '@angular/core';
 // import * as L from 'leaflet';
 import {
   tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents,
@@ -17,8 +17,7 @@ import { isNgTemplate } from '../../../../node_modules/@angular/compiler';
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.css']
 })
-export class LeafletMapComponent implements OnInit, OnChanges {
-
+export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked {
 
   @Input() markedPoints: Heritage[] = [];
   @Input() bindingPoints: Heritage[] = [];
@@ -171,6 +170,8 @@ export class LeafletMapComponent implements OnInit, OnChanges {
         });
       });
     });
+
+
   }
 
   private emitInsideHeritages(layer) {
@@ -191,6 +192,11 @@ export class LeafletMapComponent implements OnInit, OnChanges {
       this.drawed.emit(this.data.filter(item => item.geometry.type === 'Point').filter(filterFunc));
     });
   }
+
+  ngAfterViewChecked(): void {
+    this.map.invalidateSize(true);
+  }
+
 
 
 }

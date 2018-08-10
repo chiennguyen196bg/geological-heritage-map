@@ -1,44 +1,52 @@
-@media only screen and (max-width: 320px)  { .leaflet-map-style{ height: 300px; } }
+/* @media only screen and (max-width: 320px)  { .leaflet-map-style{ height: 300px; } }
 @media only screen and (min-width: 320px)  { .leaflet-map-style{ height: 300px; } }
 @media only screen and (min-width: 768px)  { .leaflet-map-style{ height: 400px; } }
 @media only screen and (min-width: 1024px) { .leaflet-map-style{ height: 500px; } }
-@media only screen and (min-width: 1900px) { .leaflet-map-style{ height: 600px; } }
+@media only screen and (min-width: 1900px) { .leaflet-map-style{ height: 600px; } } */
+
+.leaflet-map-style {
+  height: 100%;
+}
 
 :host ::ng-deep .legend {
-    background-color:rgba(255,255,255,0.8);
-    padding: 2px;
-    border-radius: 5px;
- }
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px;
+  border-radius: 5px;
+}
 
- :host ::ng-deep .legend .legend-div {
-    width: 12px;
-    height: 12px;
-    float: left;
-    margin-right: 0.5em;
+:host ::ng-deep .legend .legend-div {
+  width: 12px;
+  height: 12px;
+  float: left;
+  margin-right: 0.5em;
 }
 
 :host ::ng-deep .div-icon {
-    /* height: 20px; */
-    text-align: center;
-    vertical-align: middle;
+  /* height: 20px; */
+  text-align: center;
+  vertical-align: middle;
 }
 
 :host ::ng-deep .background-yellow {
-    /* height: 20px; */
-    background-color: yellow;
+  /* height: 20px; */
+  background-color: yellow;
 }
 
 :host ::ng-deep .background-white {
-    /* height: 20px; */
-    background-color: white;
+  /* height: 20px; */
+  background-color: white;
 }
 
 :host ::ng-deep .div-icon img {
-    height: 20px;
-    width: 20px;
-    display: inline-block;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
 }
 
 :host ::ng-deep .div-icon span {
-    display: inline-block;
+  display: inline-block;
+}
+
+:host ::ng-deep .ui-card-body, :host ::ng-deep .ui-card-content {
+    height: 100%;
 }
