@@ -22,33 +22,8 @@
         (drawed)="onDrawed($event)">
       </app-leaflet-map>
     </div>
-    <div class="ui-g-12 ui-md-3" style="padding-top: 0px;">
-      <p-panel *ngIf="selectedHeritage" header="Đặc điểm di sản" styleClass="my-panel-header" [style]="{'margin-bottom':'20px'}">
-        <div>
-          <b>Tên: </b>{{selectedHeritage?.TenDiSan}}
-          <br>
-          <b>Loại: </b>{{selectedHeritage?.LoaiDiSan}}
-          <br>
-          <b>Kiểu: </b>{{selectedHeritage?.KieuDiSan}}
-          <br>
-          <b>Hiện trạng bảo vệ: </b>{{selectedHeritage?.HienTrangB}}
-          <br>
-          <b>Huyện: </b>{{selectedHeritage?.Huyen}}
-          <br>
-          <b>Xã: </b>{{selectedHeritage?.Xa}}
-          <br>
-          <b>Thông tin xếp hạng: </b>{{selectedHeritage?.ThongTinXe}}
-          <br>
-          <b>Khả Năng Tiếp Cận Mùa Khô: </b>{{selectedHeritage?.KhaNangTiepCanMuaKho}}
-          <br>
-          <b>Khả Năng Tiếp Cận Mùa Mưa: </b>{{selectedHeritage?.KhaNangTiepCanMuaMua}}
-          <br>
-        </div>
-        <div *ngIf="selectedHeritage" style="margin-top: 1em">
-          <button pButton label="Close" class="ui-button-warning" icon="fa-undo" (click)="selectedHeritage=undefined"></button>
-          <button pButton label="Xem thêm" icon="fa-info" (click)="onSeeMore()" *ngIf="selectedHeritage.Link"></button>
-        </div>
-      </p-panel>
+    <div class="ui-g-12 ui-md-3" *ngIf="selectedHeritage" style="padding-top: 0px;">
+      <app-heritage-overview [heritage]="selectedHeritage" (closed)="selectedHeritage = undefined"></app-heritage-overview>
     </div>
   </div>
 </section>

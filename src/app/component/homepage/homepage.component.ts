@@ -53,11 +53,6 @@ export class HomepageComponent implements OnInit {
     this.searchResults = [];
   }
 
-  public onSeeMore() {
-    console.log(this.selectedHeritage.Link);
-    window.open(this.selectedHeritage.Link, '_blank');
-  }
-
   public onDrawed(heritages: Heritage[]) {
     this.searchResults = heritages;
   }

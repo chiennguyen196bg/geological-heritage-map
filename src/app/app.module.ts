@@ -16,6 +16,7 @@ import { LeafletMapComponent } from './component/leaflet-map/leaflet-map.compone
 import { SearchSidebarComponent } from './component/search-sidebar/search-sidebar.component';
 import { ExcelService } from './service/excel.service';
 import { SearchResultComponent } from './component/search-result/search-result.component';
+import { HeritageOverviewComponent } from './component/heritage-overview/heritage-overview.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { SearchResultComponent } from './component/search-result/search-result.c
     LeafletMapComponent,
     SearchSidebarComponent,
     SearchResultComponent,
+    HeritageOverviewComponent,
   ],
   imports: [
     BrowserModule,

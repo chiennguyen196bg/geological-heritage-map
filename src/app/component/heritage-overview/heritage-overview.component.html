@@ -1,0 +1,28 @@
+<p-panel *ngIf="heritage" header="Đặc điểm di sản" styleClass="my-panel-header" [style]="{'margin-bottom':'20px'}">
+  <div>
+    <b>Số hiệu di sản: </b>{{heritage?.TT}}
+    <br>
+    <b>Tên: </b>{{heritage?.TenDiSan}}
+    <br>
+    <b>Loại: </b>{{heritage?.LoaiDiSan}}
+    <br>
+    <b>Kiểu: </b>{{heritage?.KieuDiSan}}
+    <br>
+    <b>Hiện trạng bảo vệ: </b>{{heritage?.HienTrangB}}
+    <br>
+    <b>Huyện: </b>{{heritage?.Huyen}}
+    <br>
+    <b>Xã: </b>{{heritage?.Xa}}
+    <br>
+    <b>Thông tin xếp hạng: </b>{{heritage?.ThongTinXe}}
+    <br>
+    <b>Khả Năng Tiếp Cận Mùa Khô: </b>{{heritage?.KhaNangTiepCanMuaKho}}
+    <br>
+    <b>Khả Năng Tiếp Cận Mùa Mưa: </b>{{heritage?.KhaNangTiepCanMuaMua}}
+    <br>
+  </div>
+  <div style="margin-top: 1em">
+    <button pButton label="Close" class="ui-button-warning" icon="fa-undo" (click)="close()"></button>
+    <button pButton label="Xem thêm" icon="fa-info" (click)="seeMore()" *ngIf="heritage.Link"></button>
+  </div>
+</p-panel>
