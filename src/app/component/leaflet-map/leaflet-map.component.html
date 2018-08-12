@@ -1,26 +1,30 @@
 <p-sidebar [(visible)]="displaySidebar" styleClass="ui-sidebar-sm" position="left" [baseZIndex]="10000" modal="null">
+  <h3>Quản lý lớp bản đồ</h3>
   <div>
-    <div>
-      <p-checkbox [(ngModel)]="displayGeologicalHeritageMarkers" (onChange)="changeDisplayLayer()" binary="true" label="Di sản địa chất"></p-checkbox>
-    </div>
-    <div>
-      <p-checkbox [(ngModel)]="displayCulturalHeritageMarkers" (onChange)="changeDisplayLayer()" binary="true" label="Di sản văn hóa"></p-checkbox>
-    </div>
-    <div>
-      <p-checkbox [(ngModel)]="displayBiologicalLayers" (onChange)="changeDisplayLayer()" binary="true" label="Đa dạng sinh học"></p-checkbox>
-    </div>
+    <p-radioButton name="tileLayer" value="noneMap" [(ngModel)]="displayTileLayer" label="Không nền"></p-radioButton><br>
+    <p-radioButton name="tileLayer" value="customMap" [(ngModel)]="displayTileLayer" label="Nền địa chất"></p-radioButton><br>
+  </div>
+  <hr>
+  <div>
+    <p-checkbox [(ngModel)]="displayGeologicalHeritageMarkers" (onChange)="changeDisplayLayer()" binary="true" label="Di sản địa chất"></p-checkbox>
+    <br>
+    <p-checkbox [(ngModel)]="displayCulturalHeritageMarkers" (onChange)="changeDisplayLayer()" binary="true" label="Di sản văn hóa"></p-checkbox>
+    <br>
+    <p-checkbox [(ngModel)]="displayBiologicalLayers" (onChange)="changeDisplayLayer()" binary="true" label="Đa dạng sinh học"></p-checkbox>
+    <br>
   </div>
   <hr>
   <div>
     <div *ngFor="let tourName of tourNames">
-      <p-checkbox name="groupname" value="{{tourName}}" label={{tourName}} [(ngModel)]="displayTours"></p-checkbox>
+      <p-checkbox name="groupname" value="{{tourName}}" label={{tourName}} [(ngModel)]="displayTours" (onChange)="onClikedTour(tourName)"></p-checkbox>
     </div>
   </div>
 </p-sidebar>
 <p-card [style]="{'height': '100%'}">
-  <div class="leaflet-map-style" leaflet leafletDraw [leafletOptions]="leafletOptions" [leafletLayersControl]="leafletLayersControl"
-    [leafletMarkerCluster]="markers" [leafletLayers]="biologicalLayers" [leafletMarkerClusterOptions]="markerClusterOptions"
-    [leafletDrawOptions]="drawOptions" (leafletMapReady)="onMapReady($event)">
+  <div class="leaflet-map-style" leaflet leafletDraw [leafletOptions]="leafletOptions" [leafletMarkerCluster]="markers" [leafletLayers]="biologicalLayers"
+    [leafletMarkerClusterOptions]="markerClusterOptions" [leafletDrawOptions]="drawOptions" (leafletMapReady)="onMapReady($event)">
+    <div *ngIf="displayTileLayer == 'noneMap'" [leafletLayer]="noneMap"> </div>
+    <div *ngIf="displayTileLayer == 'customMap'" [leafletLayer]="customMap"> </div>
     <div *ngIf="displayBiologicalLayers">
       <div *ngFor="let layer of biologicalLayers" [leafletLayer]="layer"></div>
     </div>

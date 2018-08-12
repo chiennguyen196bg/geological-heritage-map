@@ -15,6 +15,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 const NG_MODULE = [
   MenubarModule,
@@ -30,7 +31,8 @@ const NG_MODULE = [
   MultiSelectModule,
   DropdownModule,
   CheckboxModule,
-  DialogModule
+  DialogModule,
+  RadioButtonModule
 ];
 @NgModule({
   imports: [...NG_MODULE],

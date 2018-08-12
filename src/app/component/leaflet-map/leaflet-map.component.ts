@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 // import * as L from 'leaflet';
 import {
   tileLayer, latLng, Map, FeatureGroup, Draw, DrawEvents,
-  Circle, Polygon, Rectangle, geoJSON, Layer, Marker, LatLngBounds, layerGroup, LatLngTuple
+  Circle, Polygon, Rectangle, geoJSON, Layer, Marker, LatLngBounds, GeoJSON, LatLngTuple
 } from 'leaflet';
 import { MyUntil } from '../../utils/my-until';
 import { layerConfig } from '../../config/layer-config';
@@ -39,37 +39,22 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
   map: Map;
   data: Heritage[];
 
-  tourLayers = {};
-  displayTours = [];
-  tourNames = [];
-  public displaySidebar = true;
+  tourLayers: { [name: string]: GeoJSON<any> } = {};
+  displayTours: string[] = [];
+  tourNames: string[] = [];
+  public displaySidebar = false;
 
-  private noneMapLayer = tileLayer('', { maxZoom: 16, attribution: '' });
-  private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 16, minZoom: 11, attribution: '', opacity: 0.3 });
+  displayTileLayer = 'customMap';
+
+  noneMap = tileLayer('', { maxZoom: 16, attribution: '' });
+  customMap = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 16, minZoom: 11, attribution: '', opacity: 0.3 });
 
   // config
   leafletOptions = {
-    layers: [
-      // tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
-      // tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...' })
-      // this.openStreetMapLayer,
-      this.customMapLayer
-    ],
     zoom: 11,
     center: latLng(12.4587489, 107.9188864),
     maxZoom: 17,
     minZoom: 11
-  };
-
-  leafletLayersControl = {
-    baseLayers: {
-      // 'Open Street Map': tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
-      // 'Open Cycle Map': tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 18, attribution: '...' })
-      'Không nền': this.noneMapLayer,
-      'Nền địa chất': this.customMapLayer
-    },
-    overlays: {
-    }
   };
 
   drawOptions = {
@@ -199,9 +184,9 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
     console.log('map ready');
     this.map = map;
 
-    this.map.setMaxBounds(new LatLngBounds(
-      latLng(12.780967, 107.4663892), latLng(11.7866852, 108.0986811)
-    ));
+    // this.map.setMaxBounds(new LatLngBounds(
+    //   latLng(12.780967, 107.4663892), latLng(11.7866852, 108.0986811)
+    // ));
 
     // add editable layer to map and create event triggers
     map.addLayer(this.editableLayers);
@@ -239,6 +224,11 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
     this.map.invalidateSize(true);
   }
 
+  onClikedTour(name: string) {
+    if (this.displayTours.indexOf(name) > -1) {
+      this.map.flyToBounds(this.tourLayers[name].getBounds());
+    }
+  }
 
 
 }
