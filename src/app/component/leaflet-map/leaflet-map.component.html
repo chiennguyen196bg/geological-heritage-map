@@ -1,3 +1,22 @@
+<p-sidebar [(visible)]="displaySidebar" styleClass="ui-sidebar-sm" position="left" [baseZIndex]="10000" modal="null">
+  <div>
+    <div>
+      <p-checkbox [(ngModel)]="displayGeologicalHeritageMarkers" (onChange)="changeDisplayLayer()" binary="true" label="Di sản địa chất"></p-checkbox>
+    </div>
+    <div>
+      <p-checkbox [(ngModel)]="displayCulturalHeritageMarkers" (onChange)="changeDisplayLayer()" binary="true" label="Di sản văn hóa"></p-checkbox>
+    </div>
+    <div>
+      <p-checkbox [(ngModel)]="displayBiologicalLayers" (onChange)="changeDisplayLayer()" binary="true" label="Đa dạng sinh học"></p-checkbox>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <div *ngFor="let tourName of tourNames">
+      <p-checkbox name="groupname" value="{{tourName}}" label={{tourName}} [(ngModel)]="displayTours"></p-checkbox>
+    </div>
+  </div>
+</p-sidebar>
 <p-card [style]="{'height': '100%'}">
   <div class="leaflet-map-style" leaflet leafletDraw [leafletOptions]="leafletOptions" [leafletLayersControl]="leafletLayersControl"
     [leafletMarkerCluster]="markers" [leafletLayers]="biologicalLayers" [leafletMarkerClusterOptions]="markerClusterOptions"
@@ -5,15 +24,9 @@
     <div *ngIf="displayBiologicalLayers">
       <div *ngFor="let layer of biologicalLayers" [leafletLayer]="layer"></div>
     </div>
-  </div>
-  <p-footer>
-    <div>
-      <label>
-        <input [(ngModel)]="displayGeologicalHeritageMarkers" (change)="changeDisplayLayer()" type="checkbox">Di sản địa chất</label>
-      <label>
-        <input [(ngModel)]="displayCulturalHeritageMarkers" (change)="changeDisplayLayer()" type="checkbox">Di sản văn hóa</label>
-      <label>
-        <input [(ngModel)]="displayBiologicalLayers" (change)="changeDisplayLayer()" type="checkbox">Đa dạng sinh học</label>
+    <div *ngFor="let tour of displayTours" [leafletLayer]="tourLayers[tour]">
+
     </div>
-  </p-footer>
+  </div>
+
 </p-card>

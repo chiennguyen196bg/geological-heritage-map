@@ -39,6 +39,11 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
   map: Map;
   data: Heritage[];
 
+  tourLayers = {};
+  displayTours = [];
+  tourNames = [];
+  public displaySidebar = true;
+
   private noneMapLayer = tileLayer('', { maxZoom: 16, attribution: '' });
   private customMapLayer = tileLayer('assets/map/Z{z}/{y}/{x}.png', { maxZoom: 16, minZoom: 11, attribution: '', opacity: 0.3 });
 
@@ -102,6 +107,7 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
       // console.log(this.data);
       this.updateData();
     });
+    this.getTourData();
   }
 
   private updateData(): void {
@@ -135,6 +141,17 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
       _markers = _markers.concat(this.culturalHeritageMarkers);
     }
     this.markers = _markers;
+  }
+
+  getTourData() {
+    layerConfig.forEach((item) => {
+      this.http.get(item.layerUrl).subscribe(data => {
+        this.tourLayers[item.layerName] = geoJSON<any>(data as GeoJsonObject, {
+          style: () => item.layerOption
+        });
+        this.tourNames.push(item.layerName);
+      });
+    });
   }
 
   private addEventOnClick<T extends Layer>(layer: T, item: Heritage): T {
@@ -196,15 +213,6 @@ export class LeafletMapComponent implements OnInit, OnChanges, AfterViewChecked 
     });
     map.on(Draw.Event.EDITED, (e: DrawEvents.Edited) => {
       this.emitInsideHeritages(e.layers.getLayers()[0]);
-    });
-
-    // them overlays on map
-    layerConfig.forEach((item) => {
-      this.http.get(item.layerUrl).subscribe(data => {
-        this.leafletLayersControl.overlays[item.layerName] = geoJSON<any>(data as GeoJsonObject, {
-          style: () => item.layerOption
-        });
-      });
     });
   }
 

@@ -14,7 +14,7 @@ import { Heritage } from '../../models/heritage';
 })
 export class HomepageComponent implements OnInit {
   @ViewChild(LeafletMapComponent)
-  private leafletMapComponent: LeafletMapComponent;
+  public leafletMapComponent: LeafletMapComponent;
 
   items: MenuItem[] = [
     { label: 'CSDL Di sản tỉnh DakNong' }
