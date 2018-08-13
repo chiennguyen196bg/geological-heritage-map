@@ -48,26 +48,26 @@ export class MyUntil {
         return geoJSON(item.geometry as GeoJsonObject, {
             style: function (): PathOptions {
                 return {
-                    fillOpacity: 0.4,
-                    fillColor: MyUntil.stringToColour(item.TenDiSan),
+                    fillOpacity: 0.2,
+                    // fillColor: MyUntil.stringToColour(item.TenDiSan),
                 };
             }
         });
     }
 
-    public static stringToColour(str: string) {
-        str = str ? str + 'ABC' : ' ';
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-          // tslint:disable-next-line:no-bitwise
-          hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        let colour = '#';
-        for (let i = 0; i < 3; i++) {
-          // tslint:disable-next-line:no-bitwise
-          const value = (hash >> (i * 8)) & 0xFF;
-          colour += ('00' + value.toString(16)).substr(-2);
-        }
-        return colour;
-      }
+    // public static stringToColour(str: string) {
+    //     str = str ? str + 'ABC' : ' ';
+    //     let hash = 0;
+    //     for (let i = 0; i < str.length; i++) {
+    //         // tslint:disable-next-line:no-bitwise
+    //         hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    //     }
+    //     let colour = '#';
+    //     for (let i = 0; i < 3; i++) {
+    //         // tslint:disable-next-line:no-bitwise
+    //         const value = (hash >> (i * 8)) & 0xFF;
+    //         colour += ('00' + value.toString(16)).substr(-2);
+    //     }
+    //     return colour;
+    // }
 }

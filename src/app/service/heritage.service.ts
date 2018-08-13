@@ -45,7 +45,10 @@ export class HeritageService {
   public getDistinstValues(fieldName: string, searchObjects: SearchObject[]): Observable<string[]> {
     return this.search(searchObjects).pipe(
       map(data => {
-        const set = new Set(data.map(item => item[fieldName]));
+        const set = new Set();
+        data.forEach(item => {
+          (item[fieldName] as string).split(',').forEach(val => set.add(val.trim()));
+        });
         return Array.from(set);
       })
     );
@@ -94,7 +97,7 @@ export class HeritageService {
   private orFilter(data: Heritage, field: string, value: string[]): boolean {
     for (let i = 0; i < value.length; i++) {
       const element = value[i];
-      if (data[field].toLocaleLowerCase() === element.toLocaleLowerCase()) {
+      if (data[field].toLocaleLowerCase().indexOf(element.toLocaleLowerCase()) > -1) {
         return true;
       }
     }
