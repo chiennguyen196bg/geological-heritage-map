@@ -9,7 +9,7 @@ import { Heritage } from '../models/heritage';
 export class HeritageService {
 
   private _cache: Heritage[];
-  private _url = '/assets/data/DiemDiSanGop_0.json';
+  private _url = 'assets/data/DiemDiSanGop_0.json';
 
   constructor(
     private http: HttpClient
